@@ -1,0 +1,12 @@
+# ignore everything
+*
+
+# allow src folder
+!src/
+!src/**
+
+# allow README
+!README.md
+
+# allow gitignore itself
+!.gitignore
