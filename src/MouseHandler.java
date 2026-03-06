@@ -1,20 +1,41 @@
-import java.awt.event.*;
 
-public class MouseHandler implements MouseMotionListener{
-    GamePanel gamePanel;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
+
+public class MouseHandler implements MouseListener{
+    private GamePanel gamePanel;
     
     public MouseHandler(GamePanel gamePanel){
         this.gamePanel = gamePanel;
     }
-   
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        gamePanel.setMouseX(e.getX());
-        gamePanel.setMouseY(e.getY());
-    }
 
+    //Click to put tower
     @Override
-    public void mouseDragged(MouseEvent e) {
-        
+    public void mousePressed(MouseEvent e) {
+        String character = gamePanel.getCharacterSelected();
+        ArrayList<Assasin> allTower = gamePanel.getAllTower();
+        int towerAmount = gamePanel.getTowerAmount();
+        switch(character){
+            case "Assasin":
+                allTower.add(new Assasin(gamePanel, gamePanel.getMouseX(), gamePanel.getMouseY()));
+                break;
+        }
+        gamePanel.setTowerAmount(towerAmount + 1);
+    }
+    
+    //Don't use
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+    @Override
+    public void mouseEntered(MouseEvent e) {  
+    }
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }
