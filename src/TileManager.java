@@ -1,5 +1,6 @@
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,29 +57,45 @@ public class TileManager {
                 case 1:
                     tile = new Tile[13];
                     for (int i = 0; i < 13; i++){
-                        tile[i] = new Tile();
-                        tile[i].image = ImageIO.read(getClass().getResourceAsStream("/source/Tiles/01/Images/" + i + ".png"));
+                        BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/source/Tiles/01/Images/" + i + ".png"));
+                        if(i == 0){
+                            tile[i] = new Tile(image, false);
+                        }else{
+                            tile[i] = new Tile(image, true);
+                        }
                     }
                     break;
                 case 2:
                     tile = new Tile[7];
                     for (int i = 0; i < 7; i++){
-                        tile[i] = new Tile();
-                        tile[i].image = ImageIO.read(getClass().getResourceAsStream("/source/Tiles/02/Images/" + i + ".png"));
+                        BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/source/Tiles/02/Images/" + i + ".png"));
+                        if(i == 0){
+                            tile[i] = new Tile(image, false);
+                        }else{
+                            tile[i] = new Tile(image, true);
+                        }
                     }
                     break;
                 case 3:
                     tile = new Tile[7];
                     for (int i = 0; i < 7; i++){
-                        tile[i] = new Tile();
-                        tile[i].image = ImageIO.read(getClass().getResourceAsStream("/source/Tiles/03/Images/" + i + ".png"));
+                        BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/source/Tiles/03/Images/" + i + ".png"));
+                        if(i == 0){
+                            tile[i] = new Tile(image, false);
+                        }else{
+                            tile[i] = new Tile(image, true);
+                        }
                     }
                     break;
                 case 4:
                     tile = new Tile[13];
                     for (int i = 0; i < 13; i++){
-                        tile[i] = new Tile();
-                        tile[i].image = ImageIO.read(getClass().getResourceAsStream("/source/Tiles/04/Images/" + i + ".png"));
+                        BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/source/Tiles/04/Images/" + i + ".png"));
+                        if(i == 0){
+                            tile[i] = new Tile(image, false);
+                        }else{
+                            tile[i] = new Tile(image, true);
+                        }
                     }
                     break;
             }
@@ -95,7 +112,7 @@ public class TileManager {
         
         while (col < gamePanel.getMaxScreenCol() && row < gamePanel.getMaxScreenRow()){
             int tileNum = mapTileNum[col][row];
-            g2.drawImage(tile[tileNum].image, x, y, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
+            g2.drawImage(tile[tileNum].getImage(), x, y, gamePanel.getTileSize(), gamePanel.getTileSize(), null);
             col++;
             x += gamePanel.getTileSize();
             if (col == gamePanel.getMaxScreenCol()){
@@ -105,5 +122,13 @@ public class TileManager {
                 y += gamePanel.getTileSize();
             }
         }
+    }
+    
+    public int[][] getMapTileNum(){
+        return mapTileNum;
+    }
+    
+    public Tile[] getTile(){
+        return tile;
     }
 }

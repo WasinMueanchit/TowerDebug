@@ -19,9 +19,8 @@ public class GamePanel extends JPanel implements Runnable {
     private Thread gameThread;
 
     //Mouse
-    private int mouseX = 0;
-    private int mouseY = 0;
-    private String characterSelected = "Assasin";
+    private Pointer pointer;
+    private CollisionChecker collisionChecker;
 
     //Game Setting
     private int level = 4;
@@ -30,6 +29,9 @@ public class GamePanel extends JPanel implements Runnable {
     private Point[] waypointsLevel3 = {new Point(0, 0), new Point(0, tileSize * 3), new Point(tileSize * 4, tileSize * 3), new Point(tileSize * 4, tileSize * 5), new Point(tileSize * 1, tileSize * 5), new Point(tileSize * 1, tileSize * 7), new Point(tileSize * 7, tileSize * 7), new Point(tileSize * 7, tileSize * 2), new Point(tileSize * 5, tileSize * 2), new Point(tileSize * 5, 0), new Point(tileSize * 11, 0), new Point(tileSize * 11, tileSize * 2), new Point(tileSize * 9, tileSize * 5), new Point(tileSize * 13, tileSize * 5), new Point(tileSize * 13, tileSize * 6), new Point(tileSize * 15, tileSize * 6)};
     private Point[] waypointsLevel4 = {new Point(0, tileSize * 4), new Point(tileSize * 2, tileSize * 4), new Point(tileSize * 2, tileSize * 1), new Point(tileSize * 13, tileSize * 1), new Point(tileSize * 13, tileSize * 3), new Point(tileSize * 4, tileSize * 5), new Point(tileSize * 3, tileSize * 6), new Point(tileSize * 6, tileSize * 5), new Point(tileSize * 8, tileSize * 6), new Point(tileSize * 10, tileSize * 5), new Point(tileSize * 14, tileSize * 5)};
     private final int FPS = 60;
+    private double maxBaseHP = 1000;
+    private double baseHP = 1000;
+    private BufferedImage heartImage;
 
     //Event Handler
     private MouseMotionHandler mouseMotionHandler;
@@ -62,7 +64,9 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread = new Thread(this);
         gameThread.start();
 
-        mouseMotionHandler = new MouseMotionHandler(this);
+        pointer = new Pointer(this);
+        collisionChecker = new CollisionChecker(this);
+        mouseMotionHandler = new MouseMotionHandler(pointer);
         mouseHandler = new MouseHandler(this);
         this.addMouseMotionListener(mouseMotionHandler);
         this.addMouseListener(mouseHandler);
@@ -89,19 +93,28 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
-        for (FemaleGoblin e : allEnemy){
-            e.draw(g2);
-        }
         for (Assasin t : allTower) {
             t.draw(g2);
         }
-        drawCharacterSelected(g2);
+        for (FemaleGoblin e : allEnemy){
+            e.draw(g2);
+        }
+        pointer.drawCharacterSelected(g2);
 //        g2.dispose();
+        drawBaseHP(g2);
     }
     
     public void update() {
-        for(FemaleGoblin e : allEnemy){
-            e.update();
+        for(int i = allEnemy.size()-1; i >= 0; i--){
+            FemaleGoblin enemy = allEnemy.get(i);
+            enemy.update();
+            if(!enemy.getAlive()){
+                allEnemy.remove(i);
+            }
+        }
+        for(int i = allTower.size()-1; i >= 0; i--){
+            Assasin tower = allTower.get(i);
+            tower.update();
         }
     }
 
@@ -119,6 +132,7 @@ public class GamePanel extends JPanel implements Runnable {
                     femaleGoblinAnimation[i][j] = ImageIO.read(getClass().getResourceAsStream("/source/Female Goblin/" + i + "/" + j + ".png"));
                 }
             }
+            heartImage = ImageIO.read(getClass().getResourceAsStream("/source/UI/Heart.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -127,43 +141,26 @@ public class GamePanel extends JPanel implements Runnable {
     public void spawnEnemy(){
         spawnCounter++;
         if(spawnCounter == FPS && enemyAmount < maxEnemy){
-            allEnemy.add(new FemaleGoblin(this, waypointsLevel4, 2));
+            allEnemy.add(new FemaleGoblin(this, waypointsLevel4, 1, 100, 100));
             enemyAmount += 1;
             spawnCounter = 0;
         }
     }
-    
-    public void drawCharacterSelected(Graphics2D g2){
-        if (!characterSelected.equals("")){
-            BufferedImage image = null;
-            switch(characterSelected){
-                case "Assasin":
-                    image = assasinAnimation[4][0];
-                    break;
-            }
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-            g2.drawImage(image, mouseX - tileSize / 2, mouseY - tileSize / 2, tileSize, tileSize, null);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        }
+
+    public void drawBaseHP(Graphics2D g2){
+        double oneScale = (double) 200/maxBaseHP;
+        double baseHPBarValue = oneScale*baseHP;
+        g2.setColor(new Color(18, 10, 7));
+        g2.fillRoundRect(35, screenHeight - 50, 208, 30, 24, 24);
+        g2.setColor(new Color(206, 67, 98));
+        g2.fillRoundRect(39, screenHeight - 46, (int)baseHPBarValue, 22, 20, 20);
+        g2.setColor(Color.white);
+        g2.setFont(new Font("Arial", Font.BOLD, 18));
+        g2.drawString((int) baseHP + "", 60,screenHeight - 29);
+        g2.drawImage(heartImage, 20, screenHeight - 50, 32, 32, null);
     }
-    
     
     //------------------------- SETTER & GETTER -------------------------
-    public void setMouseX(int x) {
-        this.mouseX = x;
-    }
-
-    public int getMouseX() {
-        return mouseX;
-    }
-
-    public void setMouseY(int y) {
-        this.mouseY = y;
-    }
-
-    public int getMouseY() {
-        return mouseY;
-    }
 
     public int getTileSize() {
         return tileSize;
@@ -188,10 +185,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void setTowerAmount(int towerAmount) {
         this.towerAmount = towerAmount;
     }
-    
-    public String getCharacterSelected(){
-        return characterSelected;
-    }
 
     public ArrayList<Assasin> getAllTower() {
         return allTower;
@@ -205,4 +198,27 @@ public class GamePanel extends JPanel implements Runnable {
         return femaleGoblinAnimation;
     }
     
+    public Pointer getPointer(){
+        return pointer;
+    }
+    
+    public TileManager getTileManager(){
+        return tileManager;
+    }
+    
+    public CollisionChecker getCollisionChecker(){
+        return collisionChecker;
+    }
+    
+    public double getBaseHP(){
+        return baseHP;
+    }
+    
+    public void setBaseHP(double baseHP){
+        this.baseHP = baseHP;
+    }
+    
+    public ArrayList<FemaleGoblin> getAllEnemy(){
+        return allEnemy;
+    }
 }
