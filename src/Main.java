@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
 
         JFrame window = new JFrame();
-        
+
         //Character UI
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(400, 50));

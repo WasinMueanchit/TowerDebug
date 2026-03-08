@@ -44,7 +44,7 @@ public class Assasin {
         this.baseRange = this.range;
         this.enemyInArea = new ArrayList<>();
         this.attackType = attackType;
-        BufferedImage[][] assasinAnimation = gamePanel.getAssasinAnimation();
+        BufferedImage[][] assasinAnimation = gamePanel.getLoadAnimation().getAssasinAnimation();
         up = assasinAnimation[0];
         down = assasinAnimation[1];
         left = assasinAnimation[2];

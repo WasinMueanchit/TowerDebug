@@ -21,7 +21,7 @@ public class MouseHandler implements MouseListener{
             int towerAmount = gamePanel.getTowerAmount();
             switch(character){
                 case "Assasin":
-                    allTower.add(new Assasin(gamePanel, pointer.getX(), pointer.getY(), 20, 10, 150, "AOE"));
+                    allTower.add(new Assasin(gamePanel, pointer.getX(), pointer.getY(), 20, 20, 150, "Single"));
                     break;
             }
             gamePanel.setTowerAmount(towerAmount + 1);

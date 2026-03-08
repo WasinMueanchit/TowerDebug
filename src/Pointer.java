@@ -30,7 +30,7 @@ public class Pointer {
                     baseRange = Assasin.getBaseRange();
                     solidWidth = Assasin.getSolidWidth();
                     solidHeight = Assasin.getSolidHeight();
-                    image = gamePanel.getAssasinAnimation()[4][0];
+                    image = gamePanel.getLoadAnimation().getAssasinAnimation()[4][0];
                     break;
             }
             solidArea = new Rectangle(-solidWidth/2, -solidHeight/2, solidWidth ,solidHeight);

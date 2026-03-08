@@ -32,15 +32,15 @@ public class FemaleGoblin {
     private Point[] waypoints;
     private int currentTarget = 0;
 
-    public FemaleGoblin(GamePanel gamePanel, Point[] waypoints, int speed, double maxHealth, double health) {
+    public FemaleGoblin(GamePanel gamePanel, Point[] waypoints, int speed, double health) {
         this.gamePanel = gamePanel;
         this.waypoints = waypoints;
         this.speed = speed;
-        this.maxHealth = maxHealth;
+        this.maxHealth = health;
         this.health = health;
         this.x = waypoints[0].getX();
         this.y = waypoints[0].getY() - 20;
-        BufferedImage[][] femaleGoblinAnimation = gamePanel.getFemaleGobinAnimation();
+        BufferedImage[][] femaleGoblinAnimation = gamePanel.getLoadAnimation().getFemaleGobinAnimation();
         up = femaleGoblinAnimation[0];
         down = femaleGoblinAnimation[1];
         left = femaleGoblinAnimation[2];
@@ -108,7 +108,7 @@ public class FemaleGoblin {
         g2.setColor(new Color(59, 188, 122));
         g2.fillRoundRect(x + 14, y - 11, (int)hpBarValue, 4, 3, 3);
         
-        g2.fill(solidArea);
+//        g2.fill(solidArea);
 
         //Shadow
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
