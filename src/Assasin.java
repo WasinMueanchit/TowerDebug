@@ -44,6 +44,7 @@ public class Assasin {
         this.baseRange = this.range;
         this.enemyInArea = new ArrayList<>();
         this.attackType = attackType;
+        this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range);
         BufferedImage[][] assasinAnimation = gamePanel.getLoadAnimation().getAssasinAnimation();
         up = assasinAnimation[0];
         down = assasinAnimation[1];
@@ -53,7 +54,6 @@ public class Assasin {
     }
 
     public void update() {
-        attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range);
         gamePanel.getCollisionChecker().checkEntity(this);
 
         if (enemyInArea.size() > 0) {

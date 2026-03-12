@@ -33,10 +33,6 @@ public class GamePanel extends JPanel implements Runnable {
     private double maxBaseHP = 1000;
     private double baseHP = 1000;
 
-    //Event Handler
-    private MouseMotionHandler mouseMotionHandler;
-    private MouseHandler mouseHandler;
-
     //Monster
     private ArrayList<FemaleGoblin> allEnemy = new ArrayList<>();
     private int spawnCounter = 0;
@@ -58,28 +54,41 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Assets
     private LoadAsset loadAsset;
+    
+    //UI
+    private String[] allCharacterSelected = {"Assasin", "Assasin", "", "", ""};
+    private CharacterBox[] allCharacterBox;
 
     public GamePanel() {
 
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
-
         loadAsset = new LoadAsset(this);
         loadAnimation = new LoadAnimation();
         waveManager = new WaveManager();
+        
         prepareWave();
+
+        collisionChecker = new CollisionChecker(this);
+        pointer = new Pointer(this);
+        allCharacterBox = new CharacterBox[5];
+        for (int i = 0; i < allCharacterSelected.length; i++){
+            String name = allCharacterSelected[i];
+            BufferedImage image;
+            switch(name){
+                case "Assasin":
+                    image = loadAnimation.getAssasinAnimation()[4][0];
+                    allCharacterBox[i] = new CharacterBox(this, tileSize * (5+i), tileSize * 7, 50, 50, image, name);
+                    break;
+            }   
+        }
+        this.addMouseMotionListener(pointer);
+        this.addMouseListener(pointer);
+        this.addKeyListener(pointer);
+        this.setFocusable(true);
 
         gameThread = new Thread(this);
         gameThread.start();
-
-        pointer = new Pointer(this);
-        collisionChecker = new CollisionChecker(this);
-        mouseMotionHandler = new MouseMotionHandler(pointer);
-        mouseHandler = new MouseHandler(this);
-        this.addMouseMotionListener(mouseMotionHandler);
-        this.addMouseListener(mouseHandler);
-        this.setFocusable(true);
-
     }
 
     @Override
@@ -114,10 +123,16 @@ public class GamePanel extends JPanel implements Runnable {
             e.draw(g2);
         }
         pointer.drawCharacterSelected(g2);
+        for (CharacterBox c : allCharacterBox){
+            if (c != null){
+                c.drawCharacterBox(g2);
+            }
+        }
         drawBaseHP(g2);
     }
 
     public void update() {
+        pointer.update();
         for (int i = allEnemy.size() - 1; i >= 0; i--) {
             FemaleGoblin enemy = allEnemy.get(i);
             enemy.update();
@@ -341,5 +356,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     public LoadAnimation getLoadAnimation() {
         return loadAnimation;
+    }
+    
+    public CharacterBox[] getAllCharacterBox(){
+        return allCharacterBox;
     }
 }

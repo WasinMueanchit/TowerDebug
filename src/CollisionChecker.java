@@ -58,4 +58,18 @@ public class CollisionChecker {
             }
         }
     }
+    
+    public void checkCharacterBox(Pointer pointer){
+        CharacterBox[] allCharacterBox = gamePanel.getAllCharacterBox();
+        pointer.setHoldCharacterBox("");
+        for (int i = 0; i < allCharacterBox.length; i++){
+            if(allCharacterBox[i] != null){
+                CharacterBox characterBox = allCharacterBox[i];
+                if(characterBox.getArea().intersects(pointer.getPointerArea())){
+                    String name = characterBox.getName();
+                    pointer.setHoldCharacterBox(name);
+                }
+            }
+        }
+    }
 }
