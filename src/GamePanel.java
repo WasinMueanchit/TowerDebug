@@ -122,7 +122,7 @@ public class GamePanel extends JPanel implements Runnable {
         for (FemaleGoblin e : allEnemy) {
             e.draw(g2);
         }
-        pointer.drawCharacterSelected(g2);
+        pointer.draw(g2);
         for (CharacterBox c : allCharacterBox){
             if (c != null){
                 c.drawCharacterBox(g2);
@@ -135,14 +135,19 @@ public class GamePanel extends JPanel implements Runnable {
         pointer.update();
         for (int i = allEnemy.size() - 1; i >= 0; i--) {
             FemaleGoblin enemy = allEnemy.get(i);
-            enemy.update();
             if (!enemy.getAlive()) {
                 allEnemy.remove(i);
+            }else{
+                enemy.update();
             }
         }
         for (int i = allTower.size() - 1; i >= 0; i--) {
             Assasin tower = allTower.get(i);
-            tower.update();
+            if(tower.getIsSold()){
+                allTower.remove(i);
+            }else{
+                tower.update();
+            }
         }
     }
 

@@ -2,6 +2,7 @@
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 public class Assasin {
 
     private GamePanel gamePanel;
+    private String name;
     private int x;
     private int y;
     private static int baseRange = 150;
@@ -23,8 +25,10 @@ public class Assasin {
     //Image
     private static int solidWidth = 24;
     private static int solidHeight = 40;
+    private Rectangle placedSolidArea; //Solid Area When placed
 
-    int count = 0;
+    private int count = 0;
+    private boolean isSold = false;
 
     //Animation
     private BufferedImage[] up, down, left, right, idle;
@@ -34,8 +38,9 @@ public class Assasin {
     private int animationCounter = 0;
     private int animationSpeed = 3;
 
-    public Assasin(GamePanel gamePanel, int x, int y, double damage, double attackSpeed, int range, String attackType) {
+    public Assasin(GamePanel gamePanel, String name, int x, int y, double damage, double attackSpeed, int range, String attackType) {
         this.gamePanel = gamePanel;
+        this.name = name;
         this.x = x;
         this.y = y;
         this.damage = damage;
@@ -44,7 +49,8 @@ public class Assasin {
         this.baseRange = this.range;
         this.enemyInArea = new ArrayList<>();
         this.attackType = attackType;
-        this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range);
+        this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range); //Attack Range
+        this.placedSolidArea = new Rectangle(x - solidWidth / 2, y - solidHeight / 2, solidWidth, solidHeight); //Solid Area
         BufferedImage[][] assasinAnimation = gamePanel.getLoadAnimation().getAssasinAnimation();
         up = assasinAnimation[0];
         down = assasinAnimation[1];
@@ -101,6 +107,7 @@ public class Assasin {
     }
 
     public void draw(Graphics2D g2) {
+        this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range); //Attack Range
         BufferedImage image = null;
         if (state.equals("Attacking")) {
             switch (direction) {
@@ -133,13 +140,22 @@ public class Assasin {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         //Animation & Image
         g2.drawImage(image, x - tileSize / 2, y - tileSize / 2, tileSize, tileSize, null);
-
+//        g2.fill(placedSolidArea);
         animationCounter++;
         if (animationCounter >= animationSpeed) {
             frame++;
             animationCounter = 0;
         }
         frame %= up.length;
+    }
+    
+    public void levelUp(){
+        range += 10;
+        attackSpeed -= 2;
+    }
+    
+    public void sell(){
+        isSold = true;
     }
 
     public static int getSolidWidth() {
@@ -157,8 +173,32 @@ public class Assasin {
     public Ellipse2D getAttackArea() {
         return attackArea;
     }
+    
+    public Rectangle getPlacedSolidArea(){
+        return placedSolidArea;
+    }
+    
+    public double getDamage(){
+        return damage;
+    }
+    
+    public double getAttackSpeed(){
+        return attackSpeed;
+    }
+    
+    public int getRange(){
+        return range;
+    }
 
     public ArrayList<FemaleGoblin> getEnemyInArea() {
         return enemyInArea;
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public boolean getIsSold(){
+        return isSold;
     }
 }

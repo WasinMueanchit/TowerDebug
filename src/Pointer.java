@@ -23,18 +23,35 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
     private Rectangle pointerArea;
     private Rectangle solidArea;
     private CollisionChecker collisionChecker;
+    private Assasin towerOnHold;
+    private Assasin towerOnShowUpgrade;
+    private boolean holdOnUpgradeUI = false;
+    private boolean holdOnUpgradeButton = false;
+    private boolean holdOnSellButton = false;
+    private UpgradeUI upgradeUI;
 
     public Pointer(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
         this.pointerArea = new Rectangle(x, y, 10, 10);
         this.collisionChecker = gamePanel.getCollisionChecker();
+        this.upgradeUI = new UpgradeUI();
     }
 
     public void update() {
         this.pointerArea = new Rectangle(x, y, 10, 10);
-        collisionChecker.checkCharacterBox(this);
+        collisionChecker.checkCharacterBox(this); //Check is pointer on characterbox
+        collisionChecker.checkCharacter(this); //Check is pointer on any character
+        collisionChecker.checkUpgradeUI(this); //Check is pointer on upgradeUI;
     }
 
+    public void draw(Graphics2D g2){
+        drawCharacterSelected(g2);
+        if(towerOnShowUpgrade != null){
+            upgradeUI.setCharacter(towerOnShowUpgrade);
+            upgradeUI.draw(g2);
+        }
+    }
+    
     public void drawCharacterSelected(Graphics2D g2) {
         if (!characterSelected.equals("")) {
             int tileSize = gamePanel.getTileSize();
@@ -67,7 +84,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
             g2.drawImage(image, x - tileSize / 2, y - tileSize / 2, tileSize, tileSize, null);
         }
     }
-
+    
     //Setter & Getter
     public void setX(int x) {
         this.x = x;
@@ -112,6 +129,10 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
     public void setCharacterSelected(String characterSelected) {
         this.characterSelected = characterSelected;
     }
+    
+    public void setTowerOnHold(Assasin tower){
+        this.towerOnHold = tower;
+    }
 
     //Get coordinates of mouse
     @Override
@@ -122,20 +143,31 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
     //Place Character && Select CharacterBox
     @Override
     public void mousePressed(MouseEvent e) {
-        if(!holdCharacterBox.equals("")){
+        if(!holdCharacterBox.equals("")){ //When select character on characterbox
             characterSelected = holdCharacterBox;
-        }else{            
-            if(collisionOn == false){            
+            towerOnShowUpgrade = null;
+        }
+        else if(!characterSelected.equals("")){ //When already character and want to place
+            if(collisionOn == false){
                 ArrayList<Assasin> allTower = gamePanel.getAllTower();
                 int towerAmount = gamePanel.getTowerAmount();
                 switch(characterSelected){
                     case "Assasin":
-                        allTower.add(new Assasin(gamePanel, x, y, 20, 20, 150, "Single"));
+                        allTower.add(new Assasin(gamePanel, "Assasin", x, y, 20, 20, 150, "Single"));
                         break;
                 }
                 gamePanel.setTowerAmount(towerAmount + 1);
                 characterSelected = "";
             }
+        }else if(towerOnHold != null){
+            towerOnShowUpgrade = towerOnHold;
+        }else if(towerOnShowUpgrade != null && towerOnHold == null && holdOnUpgradeUI == false){
+            towerOnShowUpgrade = null;
+        }else if(holdOnUpgradeButton == true){
+            towerOnShowUpgrade.levelUp();
+        }else if(holdOnSellButton == true && towerOnShowUpgrade != null){
+            towerOnShowUpgrade.sell();
+            towerOnShowUpgrade = null;
         }
     }
     //Cancle placea charcter
@@ -167,5 +199,25 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
     }
     @Override
     public void keyReleased(KeyEvent e) {
+    }
+    
+    public Assasin getTowerOnShowUpgrade(){
+        return towerOnShowUpgrade;
+    }
+    
+    public UpgradeUI getUpgradeUI(){
+        return upgradeUI;
+    }
+    
+    public void setHoldOnUpgradeUI(boolean holdOnUpgradeUI){
+        this.holdOnUpgradeUI = holdOnUpgradeUI;
+    }
+    
+    public void setHoldOnUpgradeButton(boolean holdOnUpgradeButton){
+        this.holdOnUpgradeButton = holdOnUpgradeButton;
+    }
+    
+    public void setHoldOnSellButton(boolean holdOnSellButton){
+        this.holdOnSellButton = holdOnSellButton;
     }
 }

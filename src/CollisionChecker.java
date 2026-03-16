@@ -9,6 +9,7 @@ public class CollisionChecker {
         this.gamePanel = gamePanel;
     }
 
+    //check is pointer on any road;
     public void checkTile(Pointer pointer) {
         int pointerLeft = pointer.getX() + pointer.getSolidArea().x;
         int pointerRight = pointer.getX() + pointer.getSolidArea().x + pointer.getSolidArea().width;
@@ -46,29 +47,64 @@ public class CollisionChecker {
         }
     }
 
+    //check is enemy on any hero;
     public void checkEntity(Assasin assasin) {
         assasin.getEnemyInArea().clear();
         ArrayList<FemaleGoblin> allEnemy = gamePanel.getAllEnemy();
         for (int i = 0; i < allEnemy.size(); i++) {
             FemaleGoblin enemy = allEnemy.get(i);
             if (assasin.getAttackArea().intersects(allEnemy.get(i).getSolidArea())) {
-                if(!assasin.getEnemyInArea().contains(enemy)){
+                if (!assasin.getEnemyInArea().contains(enemy)) {
                     assasin.getEnemyInArea().add(enemy);
                 }
             }
         }
     }
-    
-    public void checkCharacterBox(Pointer pointer){
+
+    //check is pointer on characterbox;
+    public void checkCharacterBox(Pointer pointer) {
         CharacterBox[] allCharacterBox = gamePanel.getAllCharacterBox();
         pointer.setHoldCharacterBox("");
-        for (int i = 0; i < allCharacterBox.length; i++){
-            if(allCharacterBox[i] != null){
+        for (int i = 0; i < allCharacterBox.length; i++) {
+            if (allCharacterBox[i] != null) {
                 CharacterBox characterBox = allCharacterBox[i];
-                if(characterBox.getArea().intersects(pointer.getPointerArea())){
+                if (characterBox.getArea().intersects(pointer.getPointerArea())) {
                     String name = characterBox.getName();
                     pointer.setHoldCharacterBox(name);
                 }
+            }
+        }
+    }
+
+    //check is pointer on character;
+    public void checkCharacter(Pointer pointer) {
+        ArrayList<Assasin> allTower = gamePanel.getAllTower();
+        pointer.setTowerOnHold(null);
+
+        for (Assasin tower : allTower) {
+            if (tower.getPlacedSolidArea().intersects(pointer.getPointerArea())) {
+                pointer.setTowerOnHold(tower);
+                break;
+            }
+        }
+    }
+
+    public void checkUpgradeUI(Pointer pointer) {
+        if (pointer.getTowerOnShowUpgrade() != null) {
+            if (pointer.getUpgradeUI().getUpgradeUI().intersects(pointer.getPointerArea())) {
+                pointer.setHoldOnUpgradeUI(true);
+                if(pointer.getUpgradeUI().getUpgradeButton().intersects(pointer.getPointerArea())){
+                    pointer.setHoldOnUpgradeButton(true);
+                }else{
+                    pointer.setHoldOnUpgradeButton(false);
+                }
+                if(pointer.getUpgradeUI().getSellButton().intersects(pointer.getPointerArea())){
+                    pointer.setHoldOnSellButton(true);
+                }else{
+                    pointer.setHoldOnSellButton(false);
+                }
+            } else {
+                pointer.setHoldOnUpgradeUI(false);
             }
         }
     }
