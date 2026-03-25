@@ -1,4 +1,5 @@
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 public class CollisionChecker {
@@ -11,38 +12,38 @@ public class CollisionChecker {
 
     //check is pointer on any road;
     public void checkTile(Pointer pointer) {
-        int pointerLeft = pointer.getX() + pointer.getSolidArea().x;
-        int pointerRight = pointer.getX() + pointer.getSolidArea().x + pointer.getSolidArea().width;
-        int pointerTop = pointer.getY() + pointer.getSolidArea().y;
-        int pointerBottom = pointer.getY() + pointer.getSolidArea().y + pointer.getSolidArea().height;
+        if(pointer.getSolidArea() != null){
+            int pointerLeft = pointer.getX() + pointer.getSolidArea().x;
+            int pointerRight = pointer.getX() + pointer.getSolidArea().x + pointer.getSolidArea().width;
+            int pointerTop = pointer.getY() + pointer.getSolidArea().y;
+            int pointerBottom = pointer.getY() + pointer.getSolidArea().y + pointer.getSolidArea().height;
 
-        int tileSize = gamePanel.getTileSize();
-        int pointerLeftCol = pointerLeft / tileSize;
-        int pointerRightCol = pointerRight / tileSize;
-        int pointerTopRow = pointerTop / tileSize;
-        int pointerBottomRow = pointerBottom / tileSize;
+            int tileSize = gamePanel.getTileSize();
+            int pointerLeftCol = pointerLeft / tileSize;
+            int pointerRightCol = pointerRight / tileSize;
+            int pointerTopRow = pointerTop / tileSize;
+            int pointerBottomRow = pointerBottom / tileSize;
 
-        int tileNum1, tileNum2, tileNum3, tileNum4;
-        int[][] mapTileNum = gamePanel.getTileManager().getMapTileNum();
-        if (pointerLeftCol < gamePanel.getMaxScreenCol() && pointerRightCol < gamePanel.getMaxScreenCol()
-                && pointerTopRow < gamePanel.getMaxScreenRow() && pointerBottomRow < gamePanel.getMaxScreenRow()) {
+            int tileNum1, tileNum2, tileNum3, tileNum4;
+            int[][] mapTileNum = gamePanel.getTileManager().getMapTileNum();
+            if (pointerLeftCol < gamePanel.getMaxScreenCol() && pointerRightCol < gamePanel.getMaxScreenCol()
+                    && pointerTopRow < gamePanel.getMaxScreenRow() && pointerBottomRow < gamePanel.getMaxScreenRow()) {
 
-            tileNum1 = mapTileNum[pointerLeftCol][pointerTopRow];
-            tileNum2 = mapTileNum[pointerRightCol][pointerTopRow];
-            tileNum3 = mapTileNum[pointerLeftCol][pointerBottomRow];
-            tileNum4 = mapTileNum[pointerRightCol][pointerBottomRow];
+                tileNum1 = mapTileNum[pointerLeftCol][pointerTopRow];
+                tileNum2 = mapTileNum[pointerRightCol][pointerTopRow];
+                tileNum3 = mapTileNum[pointerLeftCol][pointerBottomRow];
+                tileNum4 = mapTileNum[pointerRightCol][pointerBottomRow];
 
-            Tile[] tile = gamePanel.getTileManager().getTile();
+                Tile[] tile = gamePanel.getTileManager().getTile();
 
-            if (tile[tileNum1].getCollision() == true
-                    || tile[tileNum2].getCollision() == true
-                    || tile[tileNum3].getCollision() == true
-                    || tile[tileNum4].getCollision() == true) {
+                if (tile[tileNum1].getCollision() == true
+                        || tile[tileNum2].getCollision() == true
+                        || tile[tileNum3].getCollision() == true
+                        || tile[tileNum4].getCollision() == true) {
 
-                pointer.setCollisionOn(true);
+                    pointer.setCollisionOn(true);
 
-            } else {
-                pointer.setCollisionOn(false);
+                }
             }
         }
     }
@@ -93,14 +94,14 @@ public class CollisionChecker {
         if (pointer.getTowerOnShowUpgrade() != null) {
             if (pointer.getUpgradeUI().getUpgradeUI().intersects(pointer.getPointerArea())) {
                 pointer.setHoldOnUpgradeUI(true);
-                if(pointer.getUpgradeUI().getUpgradeButton().intersects(pointer.getPointerArea())){
+                if (pointer.getUpgradeUI().getUpgradeButton().intersects(pointer.getPointerArea())) {
                     pointer.setHoldOnUpgradeButton(true);
-                }else{
+                } else {
                     pointer.setHoldOnUpgradeButton(false);
                 }
-                if(pointer.getUpgradeUI().getSellButton().intersects(pointer.getPointerArea())){
+                if (pointer.getUpgradeUI().getSellButton().intersects(pointer.getPointerArea())) {
                     pointer.setHoldOnSellButton(true);
-                }else{
+                } else {
                     pointer.setHoldOnSellButton(false);
                 }
             } else {
@@ -108,18 +109,33 @@ public class CollisionChecker {
             }
         }
     }
-    
-    public void checkGameEnd(Pointer pointer){
-        if(pointer.getGameEnd().getIsFinishing() == true){            
-            if(pointer.getGameEnd().getReturnToMenuButton().intersects(pointer.getPointerArea())){
+
+    public void checkGameEnd(Pointer pointer) {
+        if (pointer.getGameEnd().getIsFinishing() == true) {
+            if (pointer.getGameEnd().getReturnToMenuButton().intersects(pointer.getPointerArea())) {
                 pointer.setHoldOnToMenuButton(true);
-            }else{
+            } else {
                 pointer.setHoldOnToMenuButton(false);
             }
-            if(pointer.getGameEnd().getNextLevelButton().intersects(pointer.getPointerArea())){
+            if (pointer.getGameEnd().getNextLevelButton().intersects(pointer.getPointerArea())) {
                 pointer.setHoldOnNextLevelButton(true);
-            }else{
+            } else {
                 pointer.setHoldOnNextLevelButton(false);
+            }
+        }
+    }
+
+    public void checkSolidAsset(Pointer pointer) {
+        if (!pointer.getCharacterSelected().equals("") && pointer.getSolidArea() != null) {
+            ArrayList<SolidAsset> allSolidAsset = gamePanel.getAllSolidAsset();
+            for (SolidAsset solidAsset : allSolidAsset) {
+                int width = (int) pointer.getSolidArea().getWidth();
+                int height = (int) pointer.getSolidArea().getHeight();
+                Rectangle characterSolidArea = new Rectangle(pointer.getX() - (width / 2), pointer.getY() - (height / 2), width, height);
+                if (characterSolidArea.intersects(solidAsset.getSolidArea())) {
+                    pointer.setCollisionOn(true);
+                    break;
+                }
             }
         }
     }

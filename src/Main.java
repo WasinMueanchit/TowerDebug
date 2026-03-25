@@ -13,7 +13,6 @@ public class Main {
 //        panel.setPreferredSize(new Dimension(400, 50));
 //        JButton btn = new JButton("Click");
 //        panel.add(btn);
-
         //Main game
         GamePanel gamePanel = new GamePanel();
 
