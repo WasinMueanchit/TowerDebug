@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
     private CollisionChecker collisionChecker;
 
     //Game Setting
-    private int level = 2;
+    private int level = 3;
     private ArrayList<Point[]> allWaypoint = new ArrayList<>();
     private Point[] waypointsLevel1 = {new Point(0, tileSize * 3), new Point(tileSize * 3, tileSize * 5), new Point(tileSize * 6, tileSize * 1), new Point(tileSize * 9, tileSize * 6), new Point(tileSize * 12, tileSize * 3), new Point(tileSize * 15, tileSize * 3)};
     private Point[] waypointsLevel2 = {new Point(0, tileSize * 3), new Point(tileSize * 2, tileSize * 5), new Point(tileSize * 4, tileSize * 5), new Point(tileSize * 4, tileSize * 1), new Point(tileSize * 6, tileSize * 1), new Point(tileSize * 6, tileSize * 6), new Point(tileSize * 8, tileSize * 6), new Point(tileSize * 8, tileSize * 1), new Point(tileSize * 10, tileSize * 1), new Point(tileSize * 10, tileSize * 6), new Point(tileSize * 12, tileSize * 6), new Point(tileSize * 12, tileSize * 3), new Point(tileSize * 14, tileSize * 3)};
@@ -327,18 +327,118 @@ public class GamePanel extends JPanel implements Runnable {
         Asset stone1 = allAssetLevel2.get("stone_1.png");
         Asset orange = allAssetLevel2.get("decor_3.png");
         Asset blue = allAssetLevel2.get("decor_4.png");
+        Asset grass = allAssetLevel2.get("dot.png");
+        Asset stonePile = allAssetLevel2.get("stone_1.png");
+        Asset hole2 = allAssetLevel2.get("decor_8.png");
+        Asset hole3 = allAssetLevel2.get("decor_9.png");
+        Asset stone2 = allAssetLevel2.get("stone_2.png");
+        Asset stone3 = allAssetLevel2.get("stone_3.png");
+        Asset stone4 = allAssetLevel2.get("stone_4.png");
+        Asset stone5 = allAssetLevel2.get("stone_5.png");
+        Asset stone6 = allAssetLevel2.get("stone_6.png");
+        Asset stone7 = allAssetLevel2.get("stone_7.png");
+        Asset stone8 = allAssetLevel2.get("stone_8.png");
+        Asset stone9 = allAssetLevel2.get("stone_9.png");
         
         
         g2.drawImage(tunnel.getImage(), tileSize * 0, tileSize * 0, tunnel.getWidth(), tunnel.getHeight(), null);
         g2.drawImage(rail.getImage(), tileSize * 2, tileSize * 1, rail.getWidth(), rail.getHeight(), null);
         g2.drawImage(hole.getImage(), tileSize * 0, tileSize * 1, hole.getWidth(), hole.getHeight(),null);
         g2.drawImage(cart.getImage(), tileSize * 0, tileSize * 1 + 1, cart.getWidth(), cart.getHeight(),  null);
-        g2.drawImage(hole.getImage(), tileSize * 0, tileSize * 7, hole.getWidth(), hole.getHeight(), null);
-        g2.drawImage(hole.getImage(), tileSize * 13, tileSize * 7, hole.getWidth(), hole.getHeight(),null);
-    }
+        g2.drawImage(hole2.getImage(), tileSize * 0, tileSize * 7, hole2.getWidth(), hole2.getHeight(), null);
+        g2.drawImage(hole3.getImage(), tileSize * 13, tileSize * 7, hole.getWidth(), hole.getHeight(),null);
+        g2.drawImage(orange.getImage(), tileSize * 6, tileSize * 0 +1, orange.getWidth(), orange.getHeight(), null);
+        g2.drawImage(orange.getImage(), tileSize * 11, tileSize * 0 + 1, orange.getWidth(), orange.getHeight(), null);
+        g2.drawImage(orange.getImage(), tileSize * 13, tileSize * 0 + 1, orange.getWidth(), orange.getHeight(), null);
+        g2.drawImage(blue.getImage(), tileSize * 1, tileSize * 5, blue.getWidth(), blue.getHeight(), null);
+        g2.drawImage(stonePile.getImage(), tileSize * 0 , tileSize * 1, stonePile.getWidth(), stonePile.getHeight(), null);
+        g2.drawImage(stonePile.getImage(), tileSize * 2 , tileSize * 6, stonePile.getWidth(), stonePile.getHeight(),null);
+        g2.drawImage(stonePile.getImage(), tileSize * 5 , tileSize * 4, stonePile.getWidth(), stonePile.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 2, tileSize * 6, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 1, tileSize * 1, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone7.getImage(), tileSize * 3, tileSize * 1, stone7.getWidth(), stone7.getHeight(), null);
+        g2.drawImage(stone8.getImage(), tileSize * 6, tileSize * 1, stone8.getWidth(), stone8.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 9, tileSize * 1, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 13, tileSize * 1, stone6.getWidth(), stone6.getHeight(), null);
+        g2.drawImage(stone8.getImage(), tileSize * 2, tileSize * 2, stone8.getWidth(), stone8.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 5, tileSize * 2, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone7.getImage(), tileSize * 7, tileSize * 2, stone7.getWidth(), stone7.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 11, tileSize * 2, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 14, tileSize * 2, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 1, tileSize * 3, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone8.getImage(), tileSize * 4, tileSize * 3, stone8.getWidth(), stone8.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 6, tileSize * 3, stone6.getWidth(), stone6.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 10, tileSize * 3, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone7.getImage(), tileSize * 13, tileSize * 3, stone7.getWidth(), stone7.getHeight(), null);
+        g2.drawImage(stone8.getImage(), tileSize * 2, tileSize * 4, stone8.getWidth(), stone8.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 5, tileSize * 4, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 7, tileSize * 4, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 9, tileSize * 4, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 12, tileSize * 4, stone6.getWidth(), stone6.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 1, tileSize * 5, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone7.getImage(), tileSize * 3, tileSize * 5, stone7.getWidth(), stone7.getHeight(), null);
+        g2.drawImage(stone8.getImage(), tileSize * 6, tileSize * 5, stone8.getWidth(), stone8.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 10, tileSize * 5, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 14, tileSize * 5, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone8.getImage(), tileSize * 2, tileSize * 6, stone8.getWidth(), stone8.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 4, tileSize * 6, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone7.getImage(), tileSize * 7, tileSize * 6, stone7.getWidth(), stone7.getHeight(), null);
+        g2.drawImage(stone9.getImage(), tileSize * 11, tileSize * 6, stone9.getWidth(), stone9.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 13, tileSize * 6, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 2, tileSize * 1, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 6, tileSize * 1, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 11, tileSize * 1, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone1.getImage(), tileSize * 3, tileSize * 3, stone1.getWidth(), stone1.getHeight(), null); // rare big
+        g2.drawImage(stone3.getImage(), tileSize * 8, tileSize * 2, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 13, tileSize * 2, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 1, tileSize * 3, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 5, tileSize * 3, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 10, tileSize * 3, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 3, tileSize * 4, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone1.getImage(), tileSize * 7, tileSize * 4, stone1.getWidth(), stone1.getHeight(), null); // rare big
+        g2.drawImage(stone2.getImage(), tileSize * 12, tileSize * 4, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 2, tileSize * 5, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 5, tileSize * 5, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 11, tileSize * 5, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 4, tileSize * 6, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 10, tileSize * 6, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 13, tileSize * 6, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(orange.getImage(), tileSize * 3, tileSize * 0, orange.getWidth(), orange.getHeight(), null);
+        g2.drawImage(orange.getImage(), tileSize * 8, tileSize * 0, orange.getWidth(), orange.getHeight(), null);
+        g2.drawImage(orange.getImage(), tileSize * 12, tileSize * 1, orange.getWidth(), orange.getHeight(), null);
+        g2.drawImage(orange.getImage(), tileSize * 14, tileSize * 3, orange.getWidth(), orange.getHeight(), null);
+        g2.drawImage(blue.getImage(), tileSize * 1, tileSize * 4, blue.getWidth(), blue.getHeight(), null);
+        g2.drawImage(blue.getImage(), tileSize * 5, tileSize * 2, blue.getWidth(), blue.getHeight(), null);
+        g2.drawImage(blue.getImage(), tileSize * 9, tileSize * 3, blue.getWidth(), blue.getHeight(), null);
+        g2.drawImage(blue.getImage(), tileSize * 11, tileSize * 5, blue.getWidth(), blue.getHeight(), null);
+            }
     public void drawAssetLevel3(Graphics2D g2){
         HashMap<String, Asset> allAssetLevel3 = loadAsset.getAllAssetLevel3();
+        
+        Asset lake = allAssetLevel3.get("lake.png");
+        Asset gate = allAssetLevel3.get("decor_5.png");
+        Asset ruins = allAssetLevel3.get("decor_6.png");
+        Asset stone1 = allAssetLevel3.get("stone_1.png");
+        Asset stone2 = allAssetLevel3.get("stone_2.png");
+        Asset stone3 = allAssetLevel3.get("stone_3.png");
+        Asset stone4 = allAssetLevel3.get("stone_4.png");
+        Asset stone5 = allAssetLevel3.get("stone_5.png");
+        Asset stone6 = allAssetLevel3.get("stone_6.png");
+        Asset stone7 = allAssetLevel3.get("stone_7.png");
+        Asset tree1 = allAssetLevel3.get("tree_1.png");
+        Asset tree2 = allAssetLevel3.get("tree_2.png");
+        Asset grave1 = allAssetLevel3.get("decor_3.png");
+        Asset grave2 = allAssetLevel3.get("decor_4.png");
+        Asset dot = allAssetLevel3.get("dot.png");
+        
+        g2.drawImage(lake.getImage(), tileSize * 9, tileSize * 6, lake.getWidth() * 3, lake.getHeight() * 3, null);
+        g2.drawImage(lake.getImage(), tileSize * 2, tileSize * 2 - 20, lake.getWidth() * 2, lake.getHeight() * 2,null);
+        g2.drawImage(gate.getImage(), tileSize * 10, tileSize * 3 - 10, gate.getWidth() * 3 + 20, gate.getHeight()  * 3 + 20, null);
+        g2.drawImage(stone2.getImage(), tileSize * 2 + 10, tileSize * 1 + 2, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 3 , tileSize * 1 - 45, stone2.getWidth() * 2 + + 10, stone2.getHeight() * 2,null);
+        
     }
+    
     
     public void drawAssetLevel4(Graphics2D g2){
         HashMap<String, Asset> allAssetLevel4 = loadAsset.getAllAssetLevel4();

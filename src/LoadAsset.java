@@ -77,7 +77,7 @@ public class LoadAsset {
     }
     
     public void loadAssetLevel3() {
-        File folder = new File("src/source/Assets/level2");
+        File folder = new File("src/source/Assets/level3");
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {
@@ -96,7 +96,7 @@ public class LoadAsset {
     }
     
     public void loadAssetLevel4() {
-        File folder = new File("src/source/Assets/level2");
+        File folder = new File("src/source/Assets/level4");
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {
