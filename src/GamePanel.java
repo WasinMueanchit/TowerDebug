@@ -24,7 +24,8 @@ public class GamePanel extends JPanel implements Runnable {
     private CollisionChecker collisionChecker;
 
     //Game Setting
-    private int level = 1;
+    private int level = 2;
+    private ArrayList<Point[]> allWaypoint = new ArrayList<>();
     private Point[] waypointsLevel1 = {new Point(0, tileSize * 3), new Point(tileSize * 3, tileSize * 5), new Point(tileSize * 6, tileSize * 1), new Point(tileSize * 9, tileSize * 6), new Point(tileSize * 12, tileSize * 3), new Point(tileSize * 15, tileSize * 3)};
     private Point[] waypointsLevel2 = {new Point(0, tileSize * 3), new Point(tileSize * 2, tileSize * 5), new Point(tileSize * 4, tileSize * 5), new Point(tileSize * 4, tileSize * 1), new Point(tileSize * 6, tileSize * 1), new Point(tileSize * 6, tileSize * 6), new Point(tileSize * 8, tileSize * 6), new Point(tileSize * 8, tileSize * 1), new Point(tileSize * 10, tileSize * 1), new Point(tileSize * 10, tileSize * 6), new Point(tileSize * 12, tileSize * 6), new Point(tileSize * 12, tileSize * 3), new Point(tileSize * 14, tileSize * 3)};
     private Point[] waypointsLevel3 = {new Point(0, 0), new Point(0, tileSize * 3), new Point(tileSize * 4, tileSize * 3), new Point(tileSize * 4, tileSize * 5), new Point(tileSize * 1, tileSize * 5), new Point(tileSize * 1, tileSize * 7), new Point(tileSize * 7, tileSize * 7), new Point(tileSize * 7, tileSize * 2), new Point(tileSize * 5, tileSize * 2), new Point(tileSize * 5, 0), new Point(tileSize * 11, 0), new Point(tileSize * 11, tileSize * 2), new Point(tileSize * 9, tileSize * 5), new Point(tileSize * 13, tileSize * 5), new Point(tileSize * 13, tileSize * 6), new Point(tileSize * 15, tileSize * 6)};
@@ -54,10 +55,11 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Assets
     private LoadAsset loadAsset;
-    
+
     //UI
     private String[] allCharacterSelected = {"Assasin", "Assasin", "", "", ""};
     private CharacterBox[] allCharacterBox;
+    private GameEnd gameEnd;
 
     public GamePanel() {
 
@@ -66,21 +68,27 @@ public class GamePanel extends JPanel implements Runnable {
         loadAsset = new LoadAsset(this);
         loadAnimation = new LoadAnimation();
         waveManager = new WaveManager();
+        gameEnd = new GameEnd(this);
+
+        allWaypoint.add(waypointsLevel1);
+        allWaypoint.add(waypointsLevel2);
+        allWaypoint.add(waypointsLevel3);
+        allWaypoint.add(waypointsLevel4);
         
         prepareWave();
 
         collisionChecker = new CollisionChecker(this);
-        pointer = new Pointer(this);
+        pointer = new Pointer(this, gameEnd);
         allCharacterBox = new CharacterBox[5];
-        for (int i = 0; i < allCharacterSelected.length; i++){
+        for (int i = 0; i < allCharacterSelected.length; i++) {
             String name = allCharacterSelected[i];
             BufferedImage image;
-            switch(name){
+            switch (name) {
                 case "Assasin":
                     image = loadAnimation.getAssasinAnimation()[4][0];
-                    allCharacterBox[i] = new CharacterBox(this, tileSize * (5+i), tileSize * 7, 50, 50, image, name);
+                    allCharacterBox[i] = new CharacterBox(this, tileSize * (5 + i), tileSize * 7, 50, 50, image, name);
                     break;
-            }   
+            }
         }
         this.addMouseMotionListener(pointer);
         this.addMouseListener(pointer);
@@ -115,6 +123,15 @@ public class GamePanel extends JPanel implements Runnable {
             case 1:
                 drawAssetLevel1(g2);
                 break;
+            case 2:
+                drawAssetLevel2(g2);
+                break;
+            case 3:
+                drawAssetLevel3(g2);
+                break;
+            case 4:
+                drawAssetLevel4(g2);
+                break;
         }
         for (Assasin t : allTower) {
             t.draw(g2);
@@ -123,12 +140,17 @@ public class GamePanel extends JPanel implements Runnable {
             e.draw(g2);
         }
         pointer.draw(g2);
-        for (CharacterBox c : allCharacterBox){
-            if (c != null){
+        for (CharacterBox c : allCharacterBox) {
+            if (c != null) {
                 c.drawCharacterBox(g2);
             }
         }
         drawBaseHP(g2);
+        
+//        gameEnd.drawGameEndUI(g2);
+        if(gameEnd.getIsFinishing() == true){
+            gameEnd.drawGameEndUI(g2);
+        }
     }
 
     public void update() {
@@ -137,25 +159,29 @@ public class GamePanel extends JPanel implements Runnable {
             FemaleGoblin enemy = allEnemy.get(i);
             if (!enemy.getAlive()) {
                 allEnemy.remove(i);
-            }else{
+            } else {
                 enemy.update();
             }
         }
         for (int i = allTower.size() - 1; i >= 0; i--) {
             Assasin tower = allTower.get(i);
-            if(tower.getIsSold()){
+            if (tower.getIsSold()) {
                 allTower.remove(i);
-            }else{
+            } else {
                 tower.update();
             }
+        }
+        if(baseHP <= 0){
+            gameEnd.setIsFinishing(true);
+            gameEnd.setIsLose(true);
         }
     }
 
     //LLM
     public void prepareWave() {
         spawnQueue.clear();
-        //Level1
-        HashMap<String, Integer> waveData = waveManager.getAllWaveLevel1().get(currentWave);
+
+        HashMap<String, Integer> waveData =  waveManager.getAllWaveAtLevel(level).get(currentWave);
 
         for (String enemyType : waveData.keySet()) {
             int amount = waveData.get(enemyType);
@@ -173,7 +199,7 @@ public class GamePanel extends JPanel implements Runnable {
             String enemyType = spawnQueue.remove(0);
             switch (enemyType) {
                 case "FemaleGoblin":
-                    allEnemy.add(new FemaleGoblin(this, waypointsLevel1, 1, 100 + (25 * (currentWave - 1))));
+                    allEnemy.add(new FemaleGoblin(this, allWaypoint.get(level - 1), 1, 100 + (25 * (currentWave - 1))));
                     break;
             }
             spawnCounter = 0;
@@ -183,13 +209,14 @@ public class GamePanel extends JPanel implements Runnable {
     //LLM
     public void checkWave() {
         if (spawnQueue.size() == 0 && allEnemy.size() == 0) {
-            if (waveCooldown >= FPS * 3){
-                currentWave++;
+            if (waveCooldown >= FPS * 3) {
                 waveCooldown = 0;
-                if (currentWave < waveManager.getAllWaveLevel1().size()) {
+                if (currentWave < waveManager.getAllWaveAtLevel(level).get(currentWave).size()) {
+                    currentWave++;
                     prepareWave();
                 } else {
-                    System.out.println("Level Complete");
+                    gameEnd.setIsWin(true);
+                    gameEnd.setIsFinishing(true);
                 }
             }
             waveCooldown++;
@@ -210,7 +237,6 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void drawAssetLevel1(Graphics2D g2) {
-        Random random = new Random();
         HashMap<String, Asset> allAssetLevel1 = loadAsset.getAllAssetLevel1();
         Asset house = allAssetLevel1.get("decor_2.png");
         Asset stone6 = allAssetLevel1.get("stone_6.png");
@@ -291,6 +317,32 @@ public class GamePanel extends JPanel implements Runnable {
         drawRotate(g2, bridge.getImage(), tileSize * 6 + 2, tileSize * 2 + 6, bridge.getWidth() + 10, bridge.getHeight() + 14, 90);
         drawRotate(g2, bridge.getImage(), tileSize * 9 + 2, tileSize * 2 + 6, bridge.getWidth() + 10, bridge.getHeight() + 14, 90);
     }
+    
+    public void drawAssetLevel2(Graphics2D g2){
+        HashMap<String, Asset> allAssetLevel2 = loadAsset.getAllAssetLevel2();
+        Asset cart = allAssetLevel2.get("decor_2.png");
+        Asset tunnel = allAssetLevel2.get("decor_7.png");
+        Asset hole = allAssetLevel2.get("decor_5.png");
+        Asset rail = allAssetLevel2.get("decor_6.png");
+        Asset stone1 = allAssetLevel2.get("stone_1.png");
+        Asset orange = allAssetLevel2.get("decor_3.png");
+        Asset blue = allAssetLevel2.get("decor_4.png");
+        
+        
+        g2.drawImage(tunnel.getImage(), tileSize * 0, tileSize * 0, tunnel.getWidth(), tunnel.getHeight(), null);
+        g2.drawImage(rail.getImage(), tileSize * 2, tileSize * 1, rail.getWidth(), rail.getHeight(), null);
+        g2.drawImage(hole.getImage(), tileSize * 0, tileSize * 1, hole.getWidth(), hole.getHeight(),null);
+        g2.drawImage(cart.getImage(), tileSize * 0, tileSize * 1 + 1, cart.getWidth(), cart.getHeight(),  null);
+        g2.drawImage(hole.getImage(), tileSize * 0, tileSize * 7, hole.getWidth(), hole.getHeight(), null);
+        g2.drawImage(hole.getImage(), tileSize * 13, tileSize * 7, hole.getWidth(), hole.getHeight(),null);
+    }
+    public void drawAssetLevel3(Graphics2D g2){
+        HashMap<String, Asset> allAssetLevel3 = loadAsset.getAllAssetLevel3();
+    }
+    
+    public void drawAssetLevel4(Graphics2D g2){
+        HashMap<String, Asset> allAssetLevel4 = loadAsset.getAllAssetLevel4();
+    }
 
     public void drawRotate(Graphics2D g2, BufferedImage img, int x, int y, int width, int height, double angle) {
 
@@ -362,8 +414,20 @@ public class GamePanel extends JPanel implements Runnable {
     public LoadAnimation getLoadAnimation() {
         return loadAnimation;
     }
-    
-    public CharacterBox[] getAllCharacterBox(){
+
+    public CharacterBox[] getAllCharacterBox() {
         return allCharacterBox;
+    }
+    
+    public void setLevel(int level){
+        this.level = level;
+    }
+    
+    public void nextLevel(){
+        level += 1;
+        tileManager.loadMap();
+        tileManager.getTileImage();
+        prepareWave();
+        currentWave = 0;
     }
 }

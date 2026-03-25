@@ -25,16 +25,20 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
     private CollisionChecker collisionChecker;
     private Assasin towerOnHold;
     private Assasin towerOnShowUpgrade;
+    private UpgradeUI upgradeUI;       
     private boolean holdOnUpgradeUI = false;
     private boolean holdOnUpgradeButton = false;
     private boolean holdOnSellButton = false;
-    private UpgradeUI upgradeUI;
+    private GameEnd gameEnd;
+    private boolean holdOnToMenuButton = false;
+    private boolean holdOnNextLevelButton = false;
 
-    public Pointer(GamePanel gamePanel) {
+    public Pointer(GamePanel gamePanel, GameEnd gameEnd) {
         this.gamePanel = gamePanel;
         this.pointerArea = new Rectangle(x, y, 10, 10);
         this.collisionChecker = gamePanel.getCollisionChecker();
         this.upgradeUI = new UpgradeUI();
+        this.gameEnd = gameEnd;
     }
 
     public void update() {
@@ -42,6 +46,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         collisionChecker.checkCharacterBox(this); //Check is pointer on characterbox
         collisionChecker.checkCharacter(this); //Check is pointer on any character
         collisionChecker.checkUpgradeUI(this); //Check is pointer on upgradeUI;
+        collisionChecker.checkGameEnd(this); //Check is pointer on game end ui;
     }
 
     public void draw(Graphics2D g2){
@@ -168,6 +173,14 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         }else if(holdOnSellButton == true && towerOnShowUpgrade != null){
             towerOnShowUpgrade.sell();
             towerOnShowUpgrade = null;
+        }else if(holdOnToMenuButton == true){
+            gameEnd.setIsFinishing(false);
+            gameEnd.setIsFinishing(false);
+            holdOnToMenuButton = false;
+        }else if(holdOnNextLevelButton == true){
+            gameEnd.setIsFinishing(false);
+            gamePanel.nextLevel();
+            holdOnNextLevelButton = false;
         }
     }
     //Cancle placea charcter
@@ -219,5 +232,17 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
     
     public void setHoldOnSellButton(boolean holdOnSellButton){
         this.holdOnSellButton = holdOnSellButton;
+    }
+    
+    public void setHoldOnToMenuButton(boolean holdOnToMenuButton){
+        this.holdOnToMenuButton = holdOnToMenuButton;
+    }
+    
+    public void setHoldOnNextLevelButton(boolean holdOnNextLevelButton){
+        this.holdOnNextLevelButton = holdOnNextLevelButton;
+    }
+    
+    public GameEnd getGameEnd(){
+        return gameEnd;
     }
 }

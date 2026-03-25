@@ -108,4 +108,19 @@ public class CollisionChecker {
             }
         }
     }
+    
+    public void checkGameEnd(Pointer pointer){
+        if(pointer.getGameEnd().getIsFinishing() == true){            
+            if(pointer.getGameEnd().getReturnToMenuButton().intersects(pointer.getPointerArea())){
+                pointer.setHoldOnToMenuButton(true);
+            }else{
+                pointer.setHoldOnToMenuButton(false);
+            }
+            if(pointer.getGameEnd().getNextLevelButton().intersects(pointer.getPointerArea())){
+                pointer.setHoldOnNextLevelButton(true);
+            }else{
+                pointer.setHoldOnNextLevelButton(false);
+            }
+        }
+    }
 }
