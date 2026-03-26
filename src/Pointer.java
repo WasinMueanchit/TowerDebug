@@ -69,6 +69,12 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
                     solidHeight = Assasin.getSolidHeight();
                     image = gamePanel.getLoadAnimation().getAnimation("Assasin").get("idle").get(0);
                     break;
+                case "Mage":
+                    baseRange = Assasin.getBaseRange();
+                    solidWidth = Assasin.getSolidWidth();
+                    solidHeight = Assasin.getSolidHeight();
+                    image = gamePanel.getLoadAnimation().getAnimation("Mage").get("idle").get(0);
+                    break;
             }
             solidArea = new Rectangle(-solidWidth / 2, -solidHeight / 2, solidWidth, solidHeight);
             collisionOn = false;
@@ -160,9 +166,21 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
             if (collisionOn == false) {
                 ArrayList<Assasin> allTower = gamePanel.getAllTower();
                 int towerAmount = gamePanel.getTowerAmount();
+                int cost = 0;
                 switch (characterSelected) {
                     case "Assasin":
-                        allTower.add(new Assasin(gamePanel, "Assasin", x, y, 20, 20, 150, "Single"));
+                        cost = 100;
+                        if (gamePanel.getCoin() - cost >= 0) {
+                            allTower.add(new Assasin(gamePanel, "Assasin", x, y, 20, 30, 150, "Single", false));
+                            gamePanel.setCoin(gamePanel.getCoin() - cost);
+                        }
+                        break;
+                    case "Mage":
+                        cost = 250;
+                        if (gamePanel.getCoin() - cost >= 0) {
+                            allTower.add(new Assasin(gamePanel, "Assasin", x, y, 20, 120, 150, "AOE", true));
+                            gamePanel.setCoin(gamePanel.getCoin() - cost);
+                        }
                         break;
                 }
                 gamePanel.setTowerAmount(towerAmount + 1);

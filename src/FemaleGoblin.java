@@ -15,7 +15,9 @@ public class FemaleGoblin {
     private double maxHealth;
     private double health;
     private boolean alive = true;
+    private boolean isGhost;
     private GamePanel gamePanel;
+    private int reward = 5;
     
     private Rectangle solidArea;
     
@@ -34,12 +36,13 @@ public class FemaleGoblin {
     private Point[] waypoints;
     private int currentTarget = 0;
 
-    public FemaleGoblin(GamePanel gamePanel, Point[] waypoints, int speed, double health) {
+    public FemaleGoblin(GamePanel gamePanel, Point[] waypoints, int speed, double health, boolean isGhost) {
         this.gamePanel = gamePanel;
         this.waypoints = waypoints;
         this.speed = speed;
         this.maxHealth = health;
         this.health = health;
+        this.isGhost = isGhost;
         this.x = waypoints[0].getX();
         this.y = waypoints[0].getY() - 20;
         HashMap<String, ArrayList<BufferedImage>> femaleGoblinAnimation = gamePanel.getLoadAnimation().getAnimation("Female Goblin");
@@ -119,7 +122,12 @@ public class FemaleGoblin {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         
         //Animatation & Image
+        if(isGhost == true){
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+        }
         g2.drawImage(image, x, y, tileSize, tileSize, null);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
         animationCounter++;
         if (animationCounter >= animationSpeed) {
             frame++;
@@ -151,5 +159,13 @@ public class FemaleGoblin {
     
     public void setHealth(double health){
         this.health = health;
+    }
+    
+    public boolean getIsGhost(){
+        return isGhost;
+    }
+    
+    public int getReward(){
+        return reward;
     }
 }

@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 public class LoadAnimation {
 
     //Animation
-    HashMap<String, HashMap> allAnimation = new HashMap();
+    private static HashMap<String, HashMap> allAnimation = new HashMap();
 
     public LoadAnimation() {
         loadAllAnimation();
@@ -45,7 +45,7 @@ public class LoadAnimation {
         }
     }
     
-    public HashMap<String, ArrayList<BufferedImage>> getAnimation(String character){
-        return allAnimation.get(character);
+    public static HashMap<String, ArrayList<BufferedImage>> getAnimation(String object){
+        return allAnimation.get(object);
     }
 }

@@ -54,9 +54,17 @@ public class CollisionChecker {
         ArrayList<FemaleGoblin> allEnemy = gamePanel.getAllEnemy();
         for (int i = 0; i < allEnemy.size(); i++) {
             FemaleGoblin enemy = allEnemy.get(i);
-            if (assasin.getAttackArea().intersects(allEnemy.get(i).getSolidArea())) {
-                if (!assasin.getEnemyInArea().contains(enemy)) {
-                    assasin.getEnemyInArea().add(enemy);
+            if(enemy.getIsGhost() == true){
+                if (assasin.getAttackArea().intersects(allEnemy.get(i).getSolidArea()) && assasin.getIsGhostBuster() == true) {
+                    if (!assasin.getEnemyInArea().contains(enemy)) {
+                        assasin.getEnemyInArea().add(enemy);
+                    }
+                }
+            }else{                
+                if (assasin.getAttackArea().intersects(allEnemy.get(i).getSolidArea())) {
+                    if (!assasin.getEnemyInArea().contains(enemy)) {
+                        assasin.getEnemyInArea().add(enemy);
+                    }
                 }
             }
         }

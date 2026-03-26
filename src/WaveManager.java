@@ -23,8 +23,9 @@ public class WaveManager {
 
     public void setWaveInLevel1() {
         HashMap<String, Integer> wave1 = new HashMap<>();
-        wave1.put("FemaleGoblin", 1);
+        wave1.put("FemaleGoblin", 5);
         wave1.put("Tank", 2);
+        wave1.put("GhostFemaleGoblin", 2);
 
         HashMap<String, Integer> wave2 = new HashMap<>();
         wave2.put("FemaleGoblin", 3);

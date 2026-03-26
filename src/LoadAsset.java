@@ -10,6 +10,7 @@ public class LoadAsset {
     private GamePanel gamePanel;
     //UI Asset
     private BufferedImage heartImage;
+    private BufferedImage coinImage;
     //Asset
     private HashMap<String, Asset> allAssetLevel1;
     private HashMap<String, Asset> allAssetLevel2;
@@ -33,6 +34,7 @@ public class LoadAsset {
     public void loadAnotherAsset() {
         try {
             heartImage = ImageIO.read(getClass().getResourceAsStream("/source/UI/Heart.png"));
+            coinImage = ImageIO.read(getClass().getResourceAsStream("/source/UI/Coin.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -133,5 +135,9 @@ public class LoadAsset {
 
     public BufferedImage getHeartImage() {
         return heartImage;
+    }
+    
+    public BufferedImage getCoinImage() {
+        return coinImage;
     }
 }

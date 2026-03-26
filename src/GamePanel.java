@@ -5,7 +5,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -33,6 +32,7 @@ public class GamePanel extends JPanel implements Runnable {
     private final int FPS = 60;
     private double maxBaseHP = 1000;
     private double baseHP = 1000;
+    private int coin = 300;
 
     //Monster
     private ArrayList<FemaleGoblin> allEnemy = new ArrayList<>();
@@ -53,12 +53,15 @@ public class GamePanel extends JPanel implements Runnable {
     //Animation
     private LoadAnimation loadAnimation;
 
+    //Particle
+    private ArrayList<Particle> allParticle = new ArrayList<>();
+
     //Assets
     private LoadAsset loadAsset;
     private ArrayList<SolidAsset> allSolidAsset;
 
     //UI
-    private String[] allCharacterSelected = {"Assasin", "Assasin", "", "", ""};
+    private String[] allCharacterSelected = {"Assasin", "Mage", "", "", ""};
     private CharacterBox[] allCharacterBox;
     private GameEnd gameEnd;
 
@@ -84,12 +87,9 @@ public class GamePanel extends JPanel implements Runnable {
         allCharacterBox = new CharacterBox[5];
         for (int i = 0; i < allCharacterSelected.length; i++) {
             String name = allCharacterSelected[i];
-            BufferedImage image;
-            switch (name) {
-                case "Assasin":
-                    image = loadAnimation.getAnimation("Assasin").get("idle").get(0);
-                    allCharacterBox[i] = new CharacterBox(this, tileSize * (5 + i), tileSize * 7, 50, 50, image, name);
-                    break;
+            if(!name.equals("")){                
+                BufferedImage image = loadAnimation.getAnimation(name).get("idle").get(0);
+                allCharacterBox[i] = new CharacterBox(this, tileSize * (5 + i), tileSize * 7, 50, 50, image, name);
             }
         }
         this.addMouseMotionListener(pointer);
@@ -141,12 +141,16 @@ public class GamePanel extends JPanel implements Runnable {
         for (FemaleGoblin e : allEnemy) {
             e.draw(g2);
         }
+        for (Particle p : allParticle) {
+            p.draw(g2);
+        }
         pointer.draw(g2);
         for (CharacterBox c : allCharacterBox) {
             if (c != null) {
                 c.drawCharacterBox(g2);
             }
         }
+        drawCoin(g2);
         drawBaseHP(g2);
 
 //        gameEnd.drawGameEndUI(g2);
@@ -160,6 +164,7 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = allEnemy.size() - 1; i >= 0; i--) {
             FemaleGoblin enemy = allEnemy.get(i);
             if (!enemy.getAlive()) {
+                coin += enemy.getReward();
                 allEnemy.remove(i);
             } else {
                 enemy.update();
@@ -168,9 +173,18 @@ public class GamePanel extends JPanel implements Runnable {
         for (int i = allTower.size() - 1; i >= 0; i--) {
             Assasin tower = allTower.get(i);
             if (tower.getIsSold()) {
+                coin += tower.getSellCost();
                 allTower.remove(i);
             } else {
                 tower.update();
+            }
+        }
+        for (int i = allParticle.size() - 1; i >= 0; i--) {
+            Particle particle = allParticle.get(i);
+            if (!particle.getIsAlive()) {
+                allParticle.remove(i);
+            } else {
+                particle.update();
             }
         }
         if (baseHP <= 0) {
@@ -201,7 +215,10 @@ public class GamePanel extends JPanel implements Runnable {
             String enemyType = spawnQueue.remove(0);
             switch (enemyType) {
                 case "FemaleGoblin":
-                    allEnemy.add(new FemaleGoblin(this, allWaypoint.get(level - 1), 1, 100 + (25 * (currentWave - 1))));
+                    allEnemy.add(new FemaleGoblin(this, allWaypoint.get(level - 1), 1, 100 + (25 * (currentWave - 1)), false));
+                    break;
+                case "GhostFemaleGoblin":
+                    allEnemy.add(new FemaleGoblin(this, allWaypoint.get(level - 1), 1, 100 + (25 * (currentWave - 1)), true));
                     break;
             }
             spawnCounter = 0;
@@ -210,19 +227,29 @@ public class GamePanel extends JPanel implements Runnable {
 
     //LLM
     public void checkWave() {
-        if (spawnQueue.size() == 0 && allEnemy.size() == 0) {
-            if (waveCooldown >= FPS * 3) {
+        if (spawnQueue.size() == 0 /*&& allEnemy.size() == 0*/) {
+            if (waveCooldown >= FPS * 5) {
                 waveCooldown = 0;
                 if (currentWave < waveManager.getAllWaveAtLevel(level).get(currentWave).size()) {
                     currentWave++;
                     prepareWave();
-                } else {
-                    gameEnd.setIsWin(true);
-                    gameEnd.setIsFinishing(true);
                 }
             }
             waveCooldown++;
         }
+        if (spawnQueue.size() == 0 && allEnemy.size() == 0){
+            if (waveCooldown >= FPS * 5) {
+                gameEnd.setIsWin(true);
+                gameEnd.setIsFinishing(true);
+            }
+        }
+    }
+    
+    public void drawCoin(Graphics2D g2){
+        g2.setColor(Color.white);
+        g2.setFont(new Font("Arial", Font.BOLD, 18));
+        g2.drawString(coin + "", 60, screenHeight - 80);
+        g2.drawImage(loadAsset.getCoinImage(), 20, screenHeight - 102, 32, 32, null);
     }
 
     public void drawBaseHP(Graphics2D g2) {
@@ -591,10 +618,13 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void nextLevel() {
         level += 1;
+        currentWave = 0;
+        allTower.clear();
+        coin = 300;
+        baseHP = 1000;
         tileManager.loadMap();
         tileManager.getTileImage();
         prepareWave();
-        currentWave = 0;
     }
 
     public ArrayList<SolidAsset> getAllSolidAsset() {
@@ -603,5 +633,17 @@ public class GamePanel extends JPanel implements Runnable {
 
     public int getFPS() {
         return FPS;
+    }
+
+    public ArrayList<Particle> getAllParticle() {
+        return allParticle;
+    }
+    
+    public int getCoin(){
+        return coin;
+    }
+    
+    public void setCoin(int coin){
+        this.coin = coin;
     }
 }

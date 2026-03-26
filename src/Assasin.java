@@ -17,11 +17,14 @@ public class Assasin {
     private static int baseRange = 150;
     private double damage;
     private double attackSpeed;
-    private int attackCount = 0;
+    private int attackCount;
     private int range;
+    private int sellCost = 50;
     private Ellipse2D attackArea;
     private ArrayList<FemaleGoblin> enemyInArea;
     private String attackType;
+    private boolean isGhostBuster;
+    private boolean canCreateParticle = true;
 
     //Image
     private static int solidWidth = 24;
@@ -36,10 +39,10 @@ public class Assasin {
     private String state = "idle";
     private String direction = "right";
     private int frame = 0;
-    private int animationCounter = 0;
+    private int animationCounter;
     private int animationSpeed = 3;
 
-    public Assasin(GamePanel gamePanel, String name, int x, int y, double damage, double attackSpeed, int range, String attackType) {
+    public Assasin(GamePanel gamePanel, String name, int x, int y, double damage, double attackSpeed, int range, String attackType, boolean isGhostBuster) {
         this.gamePanel = gamePanel;
         this.name = name;
         this.x = x;
@@ -50,11 +53,13 @@ public class Assasin {
         this.baseRange = this.range;
         this.enemyInArea = new ArrayList<>();
         this.attackType = attackType;
+        this.isGhostBuster = isGhostBuster;
         this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range); //Attack Range
         this.placedSolidArea = new Rectangle(x - solidWidth / 2, y - solidHeight / 2, solidWidth, solidHeight); //Solid Area
         HashMap<String, ArrayList<BufferedImage>> assasinAnimation = gamePanel.getLoadAnimation().getAnimation("Assasin");
         idle = assasinAnimation.get("idle");
         attacking = assasinAnimation.get("attacking");
+        attackCount = (int) attackSpeed;
     }
 
     public void update() {
@@ -62,17 +67,20 @@ public class Assasin {
 
         if (enemyInArea.size() > 0) {
             FemaleGoblin enemy = enemyInArea.get(0);
+            
+            //Find direction
+            if (enemy.getX() > x) {
+                direction = "right";
+            } else {
+                direction = "left";
+            }
 
             if (attackCount > attackSpeed) {
                 state = "attacking";
                 frame = 0;
+                Particle particle = new Particle(enemy.getX(), enemy.getY(), 3,"Lightning");
+                gamePanel.getAllParticle().add(particle);
 
-                //Find direction
-                if (enemy.getX() > x) {
-                    direction = "right";
-                } else {
-                    direction = "left";
-                }
 
                 //Atack
                 switch (attackType) {
@@ -81,7 +89,8 @@ public class Assasin {
                         break;
                     case "AOE":
                         for (int i = 0; i < enemyInArea.size(); i++) {
-                            enemyInArea.get(i).setHealth(enemy.getHealth() - damage);
+                            FemaleGoblin e = enemyInArea.get(i);
+                            e.setHealth(e.getHealth() - damage);
                         }
                         break;
                 }
@@ -97,10 +106,15 @@ public class Assasin {
 
     public void draw(Graphics2D g2) {
         this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range); //Attack Range
-        BufferedImage image = null;
+        BufferedImage image;
         if (state.equals("attacking")) {
-            image = attacking.get(frame);
+            if (frame < attacking.size()) {
+                image = attacking.get(frame);
+            } else {
+                image = attacking.get(attacking.size() - 1); //Loop last frame when attack cooldown
+            }
         } else {
+            frame %= idle.size();
             image = idle.get(frame);
         }
 
@@ -127,15 +141,6 @@ public class Assasin {
         if (animationCounter >= animationSpeed) {
             frame++;
             animationCounter = 0;
-        }
-
-        switch (state) {
-            case "attacking":
-                frame %= attacking.size();
-                break;
-            case "idle":
-                frame %= idle.size();
-                break;
         }
     }
 
@@ -190,5 +195,13 @@ public class Assasin {
 
     public boolean getIsSold() {
         return isSold;
+    }
+
+    public boolean getIsGhostBuster() {
+        return isGhostBuster;
+    }
+    
+    public int getSellCost(){
+        return sellCost;
     }
 }
