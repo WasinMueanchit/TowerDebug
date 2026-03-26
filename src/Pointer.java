@@ -67,7 +67,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
                     baseRange = Assasin.getBaseRange();
                     solidWidth = Assasin.getSolidWidth();
                     solidHeight = Assasin.getSolidHeight();
-                    image = gamePanel.getLoadAnimation().getAssasinAnimation()[4][0];
+                    image = gamePanel.getLoadAnimation().getAnimation("Assasin").get("idle").get(0);
                     break;
             }
             solidArea = new Rectangle(-solidWidth / 2, -solidHeight / 2, solidWidth, solidHeight);

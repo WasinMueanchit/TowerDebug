@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FemaleGoblin {
 
@@ -22,7 +24,7 @@ public class FemaleGoblin {
     private static int solidHeight = 40;
 
     //Animation
-    private BufferedImage[] up, down, left, right;
+    private ArrayList<BufferedImage> up, down, left, right;
     private String direction = "down";
     private int frame = 0;
     private int animationCounter = 0;
@@ -40,11 +42,11 @@ public class FemaleGoblin {
         this.health = health;
         this.x = waypoints[0].getX();
         this.y = waypoints[0].getY() - 20;
-        BufferedImage[][] femaleGoblinAnimation = gamePanel.getLoadAnimation().getFemaleGobinAnimation();
-        up = femaleGoblinAnimation[0];
-        down = femaleGoblinAnimation[1];
-        left = femaleGoblinAnimation[2];
-        right = femaleGoblinAnimation[3];
+        HashMap<String, ArrayList<BufferedImage>> femaleGoblinAnimation = gamePanel.getLoadAnimation().getAnimation("Female Goblin");
+        up = femaleGoblinAnimation.get("up");
+        down = femaleGoblinAnimation.get("down");
+        left = femaleGoblinAnimation.get("left");
+        right = femaleGoblinAnimation.get("right");
     }
 
     public void update() {
@@ -85,16 +87,16 @@ public class FemaleGoblin {
         BufferedImage image = null;
         switch (direction) {
             case "up":
-                image = up[frame];
+                image = up.get(frame);
                 break;
             case "down":
-                image = down[frame];
+                image = down.get(frame);
                 break;
             case "left":
-                image = left[frame];
+                image = left.get(frame);
                 break;
             case "right":
-                image = right[frame];
+                image = right.get(frame);
                 break;
         }
 
@@ -123,7 +125,8 @@ public class FemaleGoblin {
             frame++;
             animationCounter = 0;
         }
-        frame %= up.length;
+        
+        frame %= up.size();
     }
     
     public boolean getAlive(){

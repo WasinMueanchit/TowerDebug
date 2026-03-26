@@ -24,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
     private CollisionChecker collisionChecker;
 
     //Game Setting
-    private int level = 2;
+    private int level = 1;
     private ArrayList<Point[]> allWaypoint = new ArrayList<>();
     private Point[] waypointsLevel1 = {new Point(0, tileSize * 3), new Point(tileSize * 3, tileSize * 5), new Point(tileSize * 6, tileSize * 1), new Point(tileSize * 9, tileSize * 6), new Point(tileSize * 12, tileSize * 3), new Point(tileSize * 15, tileSize * 3)};
     private Point[] waypointsLevel2 = {new Point(0, tileSize * 3), new Point(tileSize * 2, tileSize * 5), new Point(tileSize * 4, tileSize * 5), new Point(tileSize * 4, tileSize * 1), new Point(tileSize * 6, tileSize * 1), new Point(tileSize * 6, tileSize * 6), new Point(tileSize * 8, tileSize * 6), new Point(tileSize * 8, tileSize * 1), new Point(tileSize * 10, tileSize * 1), new Point(tileSize * 10, tileSize * 6), new Point(tileSize * 12, tileSize * 6), new Point(tileSize * 12, tileSize * 3), new Point(tileSize * 14, tileSize * 3)};
@@ -87,7 +87,7 @@ public class GamePanel extends JPanel implements Runnable {
             BufferedImage image;
             switch (name) {
                 case "Assasin":
-                    image = loadAnimation.getAssasinAnimation()[4][0];
+                    image = loadAnimation.getAnimation("Assasin").get("idle").get(0);
                     allCharacterBox[i] = new CharacterBox(this, tileSize * (5 + i), tileSize * 7, 50, 50, image, name);
                     break;
             }

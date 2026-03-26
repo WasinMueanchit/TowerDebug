@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Assasin {
 
@@ -31,9 +32,9 @@ public class Assasin {
     private boolean isSold = false;
 
     //Animation
-    private BufferedImage[] up, down, left, right, idle;
-    private String state = "Idle";
-    private String direction = "down";
+    private ArrayList<BufferedImage> attacking, idle;
+    private String state = "idle";
+    private String direction = "right";
     private int frame = 0;
     private int animationCounter = 0;
     private int animationSpeed = 3;
@@ -51,12 +52,9 @@ public class Assasin {
         this.attackType = attackType;
         this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range); //Attack Range
         this.placedSolidArea = new Rectangle(x - solidWidth / 2, y - solidHeight / 2, solidWidth, solidHeight); //Solid Area
-        BufferedImage[][] assasinAnimation = gamePanel.getLoadAnimation().getAssasinAnimation();
-        up = assasinAnimation[0];
-        down = assasinAnimation[1];
-        left = assasinAnimation[2];
-        right = assasinAnimation[3];
-        idle = assasinAnimation[4];
+        HashMap<String, ArrayList<BufferedImage>> assasinAnimation = gamePanel.getLoadAnimation().getAnimation("Assasin");
+        idle = assasinAnimation.get("idle");
+        attacking = assasinAnimation.get("attacking");
     }
 
     public void update() {
@@ -66,23 +64,14 @@ public class Assasin {
             FemaleGoblin enemy = enemyInArea.get(0);
 
             if (attackCount > attackSpeed) {
-                state = "Attacking";
-                double dx = enemy.getX() - x;
-                double dy = enemy.getY() - y;
+                state = "attacking";
+                frame = 0;
 
                 //Find direction
-                if (Math.abs(dx) > Math.abs(dy)) {
-                    if (dx > 0) {
-                        direction = "right";
-                    } else {
-                        direction = "left";
-                    }
+                if (enemy.getX() > x) {
+                    direction = "right";
                 } else {
-                    if (dy > 0) {
-                        direction = "down";
-                    } else {
-                        direction = "up";
-                    }
+                    direction = "left";
                 }
 
                 //Atack
@@ -102,30 +91,17 @@ public class Assasin {
                 attackCount++;
             }
         } else {
-            state = "Idle";
+            state = "idle";
         }
     }
 
     public void draw(Graphics2D g2) {
         this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range); //Attack Range
         BufferedImage image = null;
-        if (state.equals("Attacking")) {
-            switch (direction) {
-                case "up":
-                    image = up[frame];
-                    break;
-                case "down":
-                    image = down[frame];
-                    break;
-                case "left":
-                    image = left[frame];
-                    break;
-                case "right":
-                    image = right[frame];
-                    break;
-            }
+        if (state.equals("attacking")) {
+            image = attacking.get(frame);
         } else {
-            image = idle[frame];
+            image = idle.get(frame);
         }
 
         int tileSize = gamePanel.getTileSize();
@@ -139,22 +115,36 @@ public class Assasin {
         g2.fillOval(x - tileSize / 6, y + tileSize / 5, tileSize / 3, tileSize / 4);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         //Animation & Image
-        g2.drawImage(image, x - tileSize / 2, y - tileSize / 2, tileSize, tileSize, null);
+        int drawX = x - tileSize / 2;
+        int drawY = y - tileSize / 2;
+        if (direction.equals("left")) {
+            g2.drawImage(image, drawX + tileSize, drawY, -tileSize, tileSize, null);
+        } else {
+            g2.drawImage(image, drawX, drawY, tileSize, tileSize, null);
+        }
 //        g2.fill(placedSolidArea);
         animationCounter++;
         if (animationCounter >= animationSpeed) {
             frame++;
             animationCounter = 0;
         }
-        frame %= up.length;
+
+        switch (state) {
+            case "attacking":
+                frame %= attacking.size();
+                break;
+            case "idle":
+                frame %= idle.size();
+                break;
+        }
     }
-    
-    public void levelUp(){
+
+    public void levelUp() {
         range += 10;
         attackSpeed -= 2;
     }
-    
-    public void sell(){
+
+    public void sell() {
         isSold = true;
     }
 
@@ -173,32 +163,32 @@ public class Assasin {
     public Ellipse2D getAttackArea() {
         return attackArea;
     }
-    
-    public Rectangle getPlacedSolidArea(){
+
+    public Rectangle getPlacedSolidArea() {
         return placedSolidArea;
     }
-    
-    public double getDamage(){
+
+    public double getDamage() {
         return damage;
     }
-    
-    public double getAttackSpeed(){
+
+    public double getAttackSpeed() {
         return attackSpeed;
     }
-    
-    public int getRange(){
+
+    public int getRange() {
         return range;
     }
 
     public ArrayList<FemaleGoblin> getEnemyInArea() {
         return enemyInArea;
     }
-    
-    public String getName(){
+
+    public String getName() {
         return name;
     }
-    
-    public boolean getIsSold(){
+
+    public boolean getIsSold() {
         return isSold;
     }
 }
