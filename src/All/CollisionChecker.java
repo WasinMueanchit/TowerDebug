@@ -1,6 +1,7 @@
 package All;
 
 
+import All.Enemy.Enemy;
 import All.Enemy.FemaleGoblin;
 import All.Tower.Tower;
 import java.awt.Rectangle;
@@ -52,22 +53,22 @@ public class CollisionChecker {
         }
     }
 
-    //check is enemy on any hero;
-    public void checkEntity(Tower assasin) {
-        assasin.getEnemyInArea().clear();
-        ArrayList<FemaleGoblin> allEnemy = gamePanel.getAllEnemy();
+    //check is enemy on any tower;
+    public void checkEntity(Tower tower) {
+        tower.getEnemyInArea().clear();
+        ArrayList<Enemy> allEnemy = gamePanel.getAllEnemy();
         for (int i = 0; i < allEnemy.size(); i++) {
-            FemaleGoblin enemy = allEnemy.get(i);
+            Enemy enemy = allEnemy.get(i);
             if(enemy.getIsGhost() == true){
-                if (assasin.getAttackArea().intersects(allEnemy.get(i).getSolidArea()) && assasin.getIsGhostBuster() == true) {
-                    if (!assasin.getEnemyInArea().contains(enemy)) {
-                        assasin.getEnemyInArea().add(enemy);
+                if (tower.getAttackArea().intersects(allEnemy.get(i).getSolidArea()) && tower.getIsGhostBuster() == true) {
+                    if (!tower.getEnemyInArea().contains(enemy)) {
+                        tower.getEnemyInArea().add(enemy);
                     }
                 }
             }else{                
-                if (assasin.getAttackArea().intersects(allEnemy.get(i).getSolidArea())) {
-                    if (!assasin.getEnemyInArea().contains(enemy)) {
-                        assasin.getEnemyInArea().add(enemy);
+                if (tower.getAttackArea().intersects(allEnemy.get(i).getSolidArea())) {
+                    if (!tower.getEnemyInArea().contains(enemy)) {
+                        tower.getEnemyInArea().add(enemy);
                     }
                 }
             }

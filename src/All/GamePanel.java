@@ -1,7 +1,13 @@
 package All;
 
-
+import All.Enemy.ArmoredOrg;
+import All.Enemy.Cyclops;
+import All.Enemy.EarthGolem;
+import All.Enemy.Enemy;
 import All.Enemy.FemaleGoblin;
+import All.Enemy.MaleGoblin;
+import All.Enemy.Skeleton;
+import All.Enemy.Yeti;
 import All.Tower.Tower;
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
     private int coin = 300;
 
     //Monster
-    private ArrayList<FemaleGoblin> allEnemy = new ArrayList<>();
+    private ArrayList<Enemy> allEnemy = new ArrayList<>();
     private int spawnCounter = 0;
     private WaveManager waveManager;
     private int waveCooldown = 0;
@@ -91,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
         allCharacterBox = new CharacterBox[5];
         for (int i = 0; i < allCharacterSelected.length; i++) {
             String name = allCharacterSelected[i];
-            if(!name.equals("")){                
+            if (!name.equals("")) {
                 BufferedImage image = loadAnimation.getAnimation(name).get("idle").get(0);
                 allCharacterBox[i] = new CharacterBox(this, tileSize * (5 + i), tileSize * 7, 50, 50, image, name);
             }
@@ -142,7 +148,7 @@ public class GamePanel extends JPanel implements Runnable {
         for (Tower t : allTower) {
             t.draw(g2);
         }
-        for (FemaleGoblin e : allEnemy) {
+        for (Enemy e : allEnemy) {
             e.draw(g2);
         }
         for (Particle p : allParticle) {
@@ -166,7 +172,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         pointer.update();
         for (int i = allEnemy.size() - 1; i >= 0; i--) {
-            FemaleGoblin enemy = allEnemy.get(i);
+            Enemy enemy = allEnemy.get(i);
             if (!enemy.getAlive()) {
                 coin += enemy.getReward();
                 allEnemy.remove(i);
@@ -218,11 +224,47 @@ public class GamePanel extends JPanel implements Runnable {
         if (spawnCounter >= FPS && spawnQueue.size() > 0) {
             String enemyType = spawnQueue.remove(0);
             switch (enemyType) {
-                case "FemaleGoblin":
-                    allEnemy.add(new FemaleGoblin(this, allWaypoint.get(level - 1), 1, 100 + (25 * (currentWave - 1)), false));
+                case "Female Goblin":
+                    allEnemy.add(new FemaleGoblin(this, allWaypoint.get(level - 1), false));
                     break;
-                case "GhostFemaleGoblin":
-                    allEnemy.add(new FemaleGoblin(this, allWaypoint.get(level - 1), 1, 100 + (25 * (currentWave - 1)), true));
+                case "Ghost Female Goblin":
+                    allEnemy.add(new FemaleGoblin(this, allWaypoint.get(level - 1), true));
+                    break;
+                case "Armored Org":
+                    allEnemy.add(new ArmoredOrg(this, allWaypoint.get(level - 1), false));
+                    break;
+                case "Ghost Armored Org":
+                    allEnemy.add(new ArmoredOrg(this, allWaypoint.get(level - 1), true));
+                    break;
+                case "Cyclops":
+                    allEnemy.add(new Cyclops(this, allWaypoint.get(level - 1), false));
+                    break;
+                case "Ghost Cyclops":
+                    allEnemy.add(new Cyclops(this, allWaypoint.get(level - 1), true));
+                    break;
+                case "Earth Golem":
+                    allEnemy.add(new EarthGolem(this, allWaypoint.get(level - 1), false));
+                    break;
+                case "Ghost Earth Golem":
+                    allEnemy.add(new EarthGolem(this, allWaypoint.get(level - 1), true));
+                    break;
+                case "Male Goblin":
+                    allEnemy.add(new MaleGoblin(this, allWaypoint.get(level - 1), false));
+                    break;
+                case "Ghost Male Goblin":
+                    allEnemy.add(new MaleGoblin(this, allWaypoint.get(level - 1), true));
+                    break;
+                case "Skeleton":
+                    allEnemy.add(new Skeleton(this, allWaypoint.get(level - 1), false));
+                    break;
+                case "Ghost Skeleton":
+                    allEnemy.add(new Skeleton(this, allWaypoint.get(level - 1), true));
+                    break;
+                case "Yeti":
+                    allEnemy.add(new Yeti(this, allWaypoint.get(level - 1), false));
+                    break;
+                case "Ghost Yeti":
+                    allEnemy.add(new Yeti(this, allWaypoint.get(level - 1), true));
                     break;
             }
             spawnCounter = 0;
@@ -236,8 +278,8 @@ public class GamePanel extends JPanel implements Runnable {
                 waveCooldown = 0;
                 if (currentWave < waveManager.getAllWaveAtLevel(level).get(currentWave).size()) {
                     currentWave++;
-                    for (Tower tower : allTower){
-                        if(tower.getCanCreateMoney() == true){
+                    for (Tower tower : allTower) {
+                        if (tower.getCanCreateMoney() == true) {
                             coin += tower.getReward();
                         }
                     }
@@ -246,15 +288,15 @@ public class GamePanel extends JPanel implements Runnable {
             }
             waveCooldown++;
         }
-        if (spawnQueue.size() == 0 && allEnemy.size() == 0 && currentWave == waveManager.getAllWaveAtLevel(level).get(currentWave).size()){ ////asdasadadsdsa
+        if (spawnQueue.size() == 0 && allEnemy.size() == 0 && currentWave == waveManager.getAllWaveAtLevel(level).get(currentWave).size()) { ////asdasadadsdsa
             if (waveCooldown >= FPS * 5) {
                 gameEnd.setIsWin(true);
                 gameEnd.setIsFinishing(true);
             }
         }
     }
-    
-    public void drawCoin(Graphics2D g2){
+
+    public void drawCoin(Graphics2D g2) {
         g2.setColor(Color.white);
         g2.setFont(new Font("Arial", Font.BOLD, 18));
         g2.drawString(coin + "", 60, screenHeight - 80);
@@ -513,7 +555,7 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawImage(stone7.getImage(), tileSize * 14 - 1, tileSize * 2, stone7.getWidth(), stone7.getHeight(), null);
         g2.drawImage(stone8.getImage(), tileSize * 15 - 6, tileSize * 7, stone8.getWidth(), stone8.getHeight(), null);
         g2.drawImage(stone9.getImage(), tileSize * 13 - 4, tileSize * 7, stone9.getWidth(), stone9.getHeight(), null);
-        
+
         //        for (SolidAsset solidAsset : allSolidAsset){
 //            g2.setColor(Color.red);
 //            g2.fill(solidAsset.getSolidArea());
@@ -610,7 +652,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.baseHP = baseHP;
     }
 
-    public ArrayList<FemaleGoblin> getAllEnemy() {
+    public ArrayList<Enemy> getAllEnemy() {
         return allEnemy;
     }
 
@@ -652,12 +694,12 @@ public class GamePanel extends JPanel implements Runnable {
     public ArrayList<Particle> getAllParticle() {
         return allParticle;
     }
-    
-    public int getCoin(){
+
+    public int getCoin() {
         return coin;
     }
-    
-    public void setCoin(int coin){
+
+    public void setCoin(int coin) {
         this.coin = coin;
     }
 }

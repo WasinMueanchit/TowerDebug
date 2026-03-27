@@ -1,20 +1,19 @@
 package All.Enemy;
 
-
 import All.GamePanel;
 import All.Point;
 
-public class FemaleGoblin extends Enemy{
+public class MaleGoblin extends Enemy{
     private static int solidWidth = 24;
     private static int solidHeight = 40;
-    private int health = 150;
+    private int health = 80;
     private int speed = 1;
-    public FemaleGoblin(GamePanel gamePanel, Point[] waypoints, boolean isGhost) {
-        super(gamePanel, waypoints, isGhost, "Female Goblin");
+    public MaleGoblin(GamePanel gamePanel, Point[] waypoints, boolean isGhost) {
+        super(gamePanel, waypoints, isGhost, "Male Goblin");
         super.setMaxHealth(health);
         super.setHealth(health);
         super.setSpeed(speed);
-        super.setReward(5);
+        super.setReward(10);
         super.setSolidWidth(solidWidth);
         super.setSolidHeight(solidHeight);
     }
