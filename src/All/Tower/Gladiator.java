@@ -8,12 +8,13 @@ public class Gladiator extends Tower {
     private static int solidWidth = 24;
     private static int solidHeight = 40;
     private static int baseRange = 100;
+    private static int cost = 50;
     private int level = 1;
 
     public Gladiator(GamePanel gamePanel, int x, int y) {
         super(gamePanel, x, y, "Gladiator");
         super.setRange(baseRange);
-        super.setDamage(25);
+        super.setDamage(20);
         super.setAttackSpeed(40);
         super.setSellCost(25);
         super.setAttackType("Single");
@@ -24,12 +25,13 @@ public class Gladiator extends Tower {
     }
 
     int[] costs = {0, 40, 70};
-    int[] damages = {20, 40, 60};
+    int[] damages = {20, 30, 40};
     int[] range = {100, 120, 140};
     int[] attackSpeed = {40, 35, 30};
 
     @Override
     public void levelUp() {
+        int level = super.getLevel();
         if (level >= costs.length) {
             return;
         }
@@ -38,7 +40,7 @@ public class Gladiator extends Tower {
 
         if (currentCoin >= cost) {
             super.getGamePanel().setCoin(currentCoin - cost);
-            level++;
+            super.setLevel(level + 1);
             super.setDamage(damages[level - 1]);
             super.setRange(range[level - 1]);
             super.setAttackSpeed(attackSpeed[level - 1]);
@@ -55,5 +57,14 @@ public class Gladiator extends Tower {
 
     public static int getBaseRange() {
         return baseRange;
+    }
+
+    public static int getCost() {
+        return cost;
+    }
+
+    @Override
+    public int[] getUpGradeCosts() {
+        return costs;
     }
 }

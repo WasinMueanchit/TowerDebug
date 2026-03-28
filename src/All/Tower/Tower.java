@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class Tower implements UpdatableAndDrawable{
+public abstract class Tower implements UpdatableAndDrawable {
 
     private GamePanel gamePanel;
     private int x;
@@ -24,6 +24,7 @@ public abstract class Tower implements UpdatableAndDrawable{
     private int range;
     private int attackCount;
     private int sellCost;
+    private int level = 1;
     private Ellipse2D attackArea;
     private ArrayList<Enemy> enemyInArea;
     private String attackType;
@@ -227,7 +228,7 @@ public abstract class Tower implements UpdatableAndDrawable{
     public void setCanCreateParticle(boolean canCreateParticle) {
         this.canCreateParticle = canCreateParticle;
     }
-    
+
     public void setCanCreateParticle(boolean canCreateParticle, String particleType) {
         this.canCreateParticle = canCreateParticle;
         this.particleType = particleType;
@@ -236,7 +237,7 @@ public abstract class Tower implements UpdatableAndDrawable{
     public void setCanCreateMoney(boolean canCreateMoney) {
         this.canCreateMoney = canCreateMoney;
     }
-    
+
     public void setCanCreateMoney(boolean canCreateMoney, int reward) {
         this.canCreateMoney = canCreateMoney;
         this.reward = reward;
@@ -249,17 +250,27 @@ public abstract class Tower implements UpdatableAndDrawable{
     public void setIsSold(boolean isSold) {
         this.isSold = isSold;
     }
-    
-    public void setRange(int range){
+
+    public void setRange(int range) {
         this.range = range;
     }
-    
-    public void setPlacedSolidArea(Rectangle placedSolidArea){
+
+    public void setPlacedSolidArea(Rectangle placedSolidArea) {
         this.placedSolidArea = placedSolidArea;
     }
-    
-    public GamePanel getGamePanel(){
+
+    public GamePanel getGamePanel() {
         return gamePanel;
     }
+
+    public int getLevel() {
+        return level;
+    }
     
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public abstract int[] getUpGradeCosts();
+
 }

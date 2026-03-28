@@ -169,6 +169,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
         drawCoin(g2);
         drawBaseHP(g2);
+        drawWaveCount(g2);
 
 //        gameEnd.drawGameEndUI(g2);
         if (gameEnd.getIsFinishing() == true) {
@@ -283,9 +284,9 @@ public class GamePanel extends JPanel implements Runnable {
     //LLM
     public void checkWave() {
         if (spawnQueue.size() == 0 /*&& allEnemy.size() == 0*/) {
-            if (waveCooldown >= FPS * 5) {
+            if (waveCooldown >= FPS * 10) {
                 waveCooldown = 0;
-                if (currentWave < waveManager.getAllWaveAtLevel(level).get(currentWave).size()) {
+                if (currentWave < waveManager.getAllWaveAtLevel(level).size() - 1) {
                     currentWave++;
                     for (Tower tower : allTower) {
                         if (tower.getCanCreateMoney() == true) {
@@ -299,13 +300,13 @@ public class GamePanel extends JPanel implements Runnable {
             }
             waveCooldown++;
         }
-        if (spawnQueue.size() == 0 && allEnemy.size() == 0 && currentWave == waveManager.getAllWaveAtLevel(level).get(currentWave).size()) { ////asdasadadsdsa
+        if (spawnQueue.size() == 0 && allEnemy.size() == 0 && currentWave == waveManager.getAllWaveAtLevel(level).size() - 1 && isEverLost == false) { ////asdasadadsdsa
             if (waveCooldown >= FPS * 5) {
                 gameEnd.setIsWin(true);
                 gameEnd.setIsFinishing(true);
                 sound.setSound("victory");
                 sound.play();
-                if (level == controller.unlockedLevel){
+                if (level == controller.unlockedLevel) {
                     controller.unlockedLevel++;
                 }
             }
@@ -330,6 +331,12 @@ public class GamePanel extends JPanel implements Runnable {
         g2.setFont(new Font("Arial", Font.BOLD, 18));
         g2.drawString((int) baseHP + "", 60, screenHeight - 29);
         g2.drawImage(loadData.getHeartImage(), 20, screenHeight - 50, 32, 32, null);
+    }
+
+    public void drawWaveCount(Graphics2D g2) {
+        g2.setColor(Color.white);
+        g2.setFont(new Font("Arial", Font.BOLD, 18));
+        g2.drawString(currentWave + 1 + "/" + waveManager.getAllWaveAtLevel(level).size(), 15, 30);
     }
 
     public void drawAssetLevel1(Graphics2D g2) {
@@ -595,18 +602,312 @@ public class GamePanel extends JPanel implements Runnable {
         Asset tree2 = allAssetLevel3.get("tree_2.png");
         Asset grave1 = allAssetLevel3.get("decor_3.png");
         Asset grave2 = allAssetLevel3.get("decor_4.png");
-        Asset dot = allAssetLevel3.get("dot.png");
+        Asset grass = allAssetLevel3.get("dot.png");
 
+        g2.drawImage(grass.getImage(), tileSize * 2, tileSize * 1, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 7, tileSize * 1, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 6, tileSize * 2, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 10, tileSize * 2, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 4, tileSize * 3, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 11, tileSize * 3, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 1, tileSize * 4, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 7, tileSize * 4, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 4, tileSize * 5, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 8, tileSize * 5, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 1, tileSize * 6, grass.getWidth(), grass.getHeight(), null);
+        g2.drawImage(grass.getImage(), tileSize * 7, tileSize * 6, grass.getWidth(), grass.getHeight(), null);
         g2.drawImage(lake.getImage(), tileSize * 9, tileSize * 6, lake.getWidth() * 3, lake.getHeight() * 3, null);
         g2.drawImage(lake.getImage(), tileSize * 2, tileSize * 2 - 20, lake.getWidth() * 2, lake.getHeight() * 2, null);
         g2.drawImage(gate.getImage(), tileSize * 10, tileSize * 3 - 10, gate.getWidth() * 3 + 20, gate.getHeight() * 3 + 20, null);
         g2.drawImage(stone2.getImage(), tileSize * 2 + 10, tileSize * 1 + 2, stone2.getWidth(), stone2.getHeight(), null);
         g2.drawImage(stone2.getImage(), tileSize * 3, tileSize * 1 - 45, stone2.getWidth() * 2 + +10, stone2.getHeight() * 2, null);
+        g2.drawImage(stone3.getImage(), tileSize * 1 + 50, tileSize * 2 - 45, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 1 + 10, tileSize * 0 + 20, tree2.getWidth() * 2, tree2.getHeight() * 2, null);
+        g2.drawImage(tree2.getImage(), tileSize * 4 + 20, tileSize * 1 - 20, tree2.getWidth() * 2, tree2.getHeight() * 2, null);
+        g2.drawImage(tree2.getImage(), tileSize * 1 + 10, tileSize * 3 + 40, tree2.getWidth() * 2, tree2.getHeight() * 2, null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 20, tileSize * 4 - 20, tree1.getWidth() * 3, tree1.getHeight() * 3, null);
+        g2.drawImage(gate.getImage(), tileSize * 6 - 10, tileSize * 3 + 20, gate.getWidth() + 10, gate.getHeight() + 10, null);
+        g2.drawImage(ruins.getImage(), tileSize * 7 - 20, tileSize * 4 - 30, ruins.getWidth(), ruins.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 5, tileSize * 3, tree1.getWidth() * 3, tree1.getHeight() * 3, null);
+        g2.drawImage(tree2.getImage(), tileSize * 2, tileSize * 6, tree2.getWidth() * 2, tree2.getHeight() * 2, null);
+        g2.drawImage(ruins.getImage(), tileSize * 4, tileSize * 6 - 20, ruins.getWidth() * 2, ruins.getHeight() * 2, null);
+        g2.drawImage(stone3.getImage(), tileSize * 3 + 20, tileSize * 6, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 5, tileSize * 6, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 12, tileSize * 2 - 20, stone2.getWidth() * 3, stone2.getHeight() * 3, null);
+        g2.drawImage(stone2.getImage(), tileSize * 7, tileSize * 1, stone3.getWidth() * 2, stone3.getHeight() * 2, null);
+        g2.drawImage(stone2.getImage(), tileSize * 8 - 20, tileSize * 1, stone3.getWidth() * 2, stone3.getHeight() * 2, null);
+
+        g2.drawImage(stone4.getImage(), tileSize * 1, tileSize * 1, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 3, tileSize * 1, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 5, tileSize * 1, stone6.getWidth(), stone6.getHeight(), null);
+
+        g2.drawImage(stone5.getImage(), tileSize * 1, tileSize * 2, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 4, tileSize * 2, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 8, tileSize * 2, stone6.getWidth(), stone6.getHeight(), null);
+
+        g2.drawImage(stone6.getImage(), tileSize * 2, tileSize * 3, stone6.getWidth(), stone6.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 6, tileSize * 3, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 9, tileSize * 3, stone5.getWidth(), stone5.getHeight(), null);
+
+        g2.drawImage(stone4.getImage(), tileSize * 3, tileSize * 4, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 5, tileSize * 4, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 10, tileSize * 4, stone6.getWidth(), stone6.getHeight(), null);
+
+        g2.drawImage(stone5.getImage(), tileSize * 2, tileSize * 5, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 6, tileSize * 5, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 11, tileSize * 5, stone6.getWidth(), stone6.getHeight(), null);
+
+        g2.drawImage(stone6.getImage(), tileSize * 3, tileSize * 6, stone6.getWidth(), stone6.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 5, tileSize * 6, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 9, tileSize * 6, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 11, tileSize * 2, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 12, tileSize * 3, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 13, tileSize * 4, stone6.getWidth(), stone6.getHeight(), null);
+
+        g2.drawImage(stone5.getImage(), tileSize * 10, tileSize * 5, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 12, tileSize * 6, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone6.getImage(), tileSize * 14, tileSize * 5, stone6.getWidth(), stone6.getHeight(), null);
 
     }
 
     public void drawAssetLevel4(Graphics2D g2) {
         HashMap<String, Asset> allAssetLevel4 = loadData.getAllAssetLevel4();
+
+        Asset bridge = allAssetLevel4.get("bridge.png");
+        Asset bush1 = allAssetLevel4.get("bush_1.png");
+        Asset bush2 = allAssetLevel4.get("bush_2.png");
+        Asset bush3 = allAssetLevel4.get("bush_3.png");
+        Asset bush4 = allAssetLevel4.get("bush_4.png");
+        Asset bush5 = allAssetLevel4.get("bush_5.png");
+        Asset house = allAssetLevel4.get("decor_1.png");
+        Asset skull = allAssetLevel4.get("decor_2.png");
+        Asset grass = allAssetLevel4.get("dot.png");
+        Asset stone1 = allAssetLevel4.get("stone_1.png");
+        Asset stone2 = allAssetLevel4.get("stone_2.png");
+        Asset stone3 = allAssetLevel4.get("stone_3.png");
+        Asset stone4 = allAssetLevel4.get("stone_4.png");
+        Asset stone5 = allAssetLevel4.get("stone_5.png");
+        Asset tree1 = allAssetLevel4.get("tree_1.png");
+        Asset tree2 = allAssetLevel4.get("tree_2.png");
+        Asset tree3 = allAssetLevel4.get("tree_3.png");
+        Asset tree4 = allAssetLevel4.get("tree_4.png");
+
+        g2.drawImage(stone1.getImage(), tileSize * 0, tileSize * 6, stone1.getWidth(), stone1.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 1, tileSize * 6 + 10, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 2, tileSize * 7, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 0 + 15, tileSize * 7 + 5, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 1 + 20, tileSize * 7 + 15, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 0 + 5, tileSize * 6 + 12, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 1 + 20, tileSize * 7 + 3, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 2 + 10, tileSize * 8 - 5, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 1 + 30, tileSize * 6 + 25, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 3 + 15, tileSize * 7 + 18, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 12 + 8, tileSize * 0 + 5, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 13 + 25, tileSize * 1 + 18, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 14 + 12, tileSize * 0 + 30, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 15 - 10, tileSize * 2 + 7, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 13 + 5, tileSize * 2 + 25, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 7 + 10, tileSize * 2 + 5, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 7 - 12, tileSize * 3 + 22, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 7 + 18, tileSize * 4 + 15, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 7 + 5, tileSize * 5 + 28, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 7 - 8, tileSize * 6 + 12, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 7 + 20, tileSize * 7 + 5, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 2 + 10, tileSize * 2 + 10, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 4 + 15, tileSize * 3 + 20, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 6 + 5, tileSize * 4 + 25, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 8 + 12, tileSize * 5 + 18, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 10 + 20, tileSize * 6 + 30, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 12 + 8, tileSize * 7 + 12, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(stone1.getImage(), tileSize * 12, tileSize * 0, stone1.getWidth(), stone1.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 13, tileSize * 0 + 10, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 14, tileSize * 1, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 13 + 15, tileSize * 1 + 5, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 14 + 20, tileSize * 1 + 15, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone1.getImage(), tileSize * 7, tileSize * 2, stone1.getWidth(), stone1.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 7, tileSize * 3 + 10, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 7, tileSize * 4 + 5, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 7, tileSize * 5 + 15, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 7, tileSize * 6 + 20, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone1.getImage(), tileSize * 0 + 5, tileSize * 6 + 12, stone1.getWidth(), stone1.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 2 + 18, tileSize * 7 + 3, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 1 + 25, tileSize * 6 + 30, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 3 + 10, tileSize * 7 + 22, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 2 + 5, tileSize * 8 - 10, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone1.getImage(), tileSize * 12 + 8, tileSize * 0 + 5, stone1.getWidth(), stone1.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 13 + 25, tileSize * 1 + 18, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 14 + 12, tileSize * 0 + 30, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 15 - 10, tileSize * 2 + 7, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 13 + 5, tileSize * 2 + 25, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone1.getImage(), tileSize * 7 + 10, tileSize * 2 + 5, stone1.getWidth(), stone1.getHeight(), null);
+        g2.drawImage(stone2.getImage(), tileSize * 7 - 12, tileSize * 3 + 22, stone2.getWidth(), stone2.getHeight(), null);
+        g2.drawImage(stone3.getImage(), tileSize * 7 + 18, tileSize * 4 + 15, stone3.getWidth(), stone3.getHeight(), null);
+        g2.drawImage(stone4.getImage(), tileSize * 7 + 5, tileSize * 5 + 28, stone4.getWidth(), stone4.getHeight(), null);
+        g2.drawImage(stone5.getImage(), tileSize * 7 - 8, tileSize * 6 + 12, stone5.getWidth(), stone5.getHeight(), null);
+        g2.drawImage(stone1.getImage(), tileSize * 7 + 20, tileSize * 7 + 5, stone1.getWidth(), stone1.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 1, tileSize * 1, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 1 + 20, tileSize * 1 + 10, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 2, tileSize * 1, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 2 + 15, tileSize * 1 + 5, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 3, tileSize * 1, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 4, tileSize * 2, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 4 + 10, tileSize * 2 + 15, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 5, tileSize * 2, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 5 + 20, tileSize * 2 + 10, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 6, tileSize * 2, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 7, tileSize * 3, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 7 + 15, tileSize * 3 + 5, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 8, tileSize * 3, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 8 + 20, tileSize * 3 + 10, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 9, tileSize * 3, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 10, tileSize * 4, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 10 + 15, tileSize * 4 + 5, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 11, tileSize * 4, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 11 + 20, tileSize * 4 + 10, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 12, tileSize * 4, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 13, tileSize * 5, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 13 + 15, tileSize * 5 + 5, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 14, tileSize * 5, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 14 + 20, tileSize * 5 + 10, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 15, tileSize * 5, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 0, tileSize * 6, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 1, tileSize * 6, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 0, tileSize * 7, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 1, tileSize * 7, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 2, tileSize * 7, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 9 - 15, tileSize * 3 - 20, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 10, tileSize * 3 - 25, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 9 + 30, tileSize * 2 - 15, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 11 - 10, tileSize * 2 - 5, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 10 + 20, tileSize * 2 - 30, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 9 - 25, tileSize * 1 - 20, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 10 - 5, tileSize * 1 - 15, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 9 + 35, tileSize * 0 - 10, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 11 - 20, tileSize * 0 - 5, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 10 + 25, tileSize * 0 - 25, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 9 - 10, tileSize * 5 + 15, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 10 + 20, tileSize * 5 + 5, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 9 + 30, tileSize * 6 + 10, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 11 - 15, tileSize * 6 + 25, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 10 + 5, tileSize * 7 + 12, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 9 - 20, tileSize * 4 - 15, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 10 + 25, tileSize * 4 - 10, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 9 + 10, tileSize * 6 + 5, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 11 - 15, tileSize * 6 + 20, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 5 + 12, tileSize * 1 + 8, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 12 + 18, tileSize * 3 + 5, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 7 + 25, tileSize * 5 + 15, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 2 + 30, tileSize * 7 + 12, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(skull.getImage(), tileSize * 13 + 10, tileSize * 1 + 25, skull.getWidth(), skull.getHeight(), null);
+        g2.drawImage(tree3.getImage(), tileSize * 0 + 12, tileSize * 6 + 5, tree3.getWidth() * 85 / 100, tree3.getHeight() * 85 / 100, null);
+        g2.drawImage(tree4.getImage(), tileSize * 2 + 25, tileSize * 7 + 18, tree4.getWidth() * 85 / 100, tree4.getHeight() * 85 / 100, null);
+        g2.drawImage(tree3.getImage(), tileSize * 12 + 8, tileSize * 0 + 5, tree3.getWidth() * 85 / 100, tree3.getHeight() * 85 / 100, null);
+        g2.drawImage(tree4.getImage(), tileSize * 14 + 12, tileSize * 1 + 25, tree4.getWidth() * 85 / 100, tree4.getHeight() * 85 / 100, null);
+        g2.drawImage(tree3.getImage(), tileSize * 7 + 10, tileSize * 2 + 5, tree3.getWidth() * 85 / 100, tree3.getHeight() * 85 / 100, null);
+        g2.drawImage(tree4.getImage(), tileSize * 7 - 12, tileSize * 4 + 22, tree4.getWidth() * 85 / 100, tree4.getHeight() * 85 / 100, null);
+        g2.drawImage(tree3.getImage(), tileSize * 7 + 18, tileSize * 6 + 15, tree3.getWidth() * 85 / 100, tree3.getHeight() * 85 / 100, null);
+        g2.drawImage(tree3.getImage(), tileSize * 9 - 20, tileSize * 4 - 10, tree3.getWidth() * 9 / 10, tree3.getHeight() * 9 / 10, null);
+        g2.drawImage(tree4.getImage(), tileSize * 9 - 5, tileSize * 4 - 15, tree4.getWidth() * 9 / 10, tree4.getHeight() * 9 / 10, null);
+        g2.drawImage(tree3.getImage(), tileSize * 10 + 15, tileSize * 4 - 5, tree3.getWidth() * 9 / 10, tree3.getHeight() * 9 / 10, null);
+        g2.drawImage(tree4.getImage(), tileSize * 10 + 25, tileSize * 5 + 8, tree4.getWidth() * 9 / 10, tree4.getHeight() * 9 / 10, null);
+        g2.drawImage(tree3.getImage(), tileSize * 11 - 10, tileSize * 5 + 20, tree3.getWidth() * 9 / 10, tree3.getHeight() * 9 / 10, null);
+        g2.drawImage(tree4.getImage(), tileSize * 9 - 15, tileSize * 2 - 20, tree4.getWidth() * 9 / 10, tree4.getHeight() * 9 / 10, null);
+        g2.drawImage(tree3.getImage(), tileSize * 9 + 10, tileSize * 2 - 25, tree3.getWidth() * 9 / 10, tree3.getHeight() * 9 / 10, null);
+        g2.drawImage(tree4.getImage(), tileSize * 10 + 20, tileSize * 1 - 15, tree4.getWidth() * 9 / 10, tree4.getHeight() * 9 / 10, null);
+        g2.drawImage(tree3.getImage(), tileSize * 11 - 5, tileSize * 1 - 5, tree3.getWidth() * 9 / 10, tree3.getHeight() * 9 / 10, null);
+        g2.drawImage(tree4.getImage(), tileSize * 11 + 15, tileSize * 2 - 10, tree4.getWidth() * 9 / 10, tree4.getHeight() * 9 / 10, null);
+        g2.drawImage(tree3.getImage(), tileSize * 9 - 10, tileSize * 6 + 15, tree3.getWidth() * 9 / 10, tree3.getHeight() * 9 / 10, null);
+        g2.drawImage(tree4.getImage(), tileSize * 9 + 20, tileSize * 6 + 25, tree4.getWidth() * 9 / 10, tree4.getHeight() * 9 / 10, null);
+        g2.drawImage(tree3.getImage(), tileSize * 10 + 5, tileSize * 7 + 12, tree3.getWidth() * 9 / 10, tree3.getHeight() * 9 / 10, null);
+        g2.drawImage(tree4.getImage(), tileSize * 11 - 15, tileSize * 7 + 20, tree4.getWidth() * 9 / 10, tree4.getHeight() * 9 / 10, null);
+        g2.drawImage(tree3.getImage(), tileSize * 11 + 25, tileSize * 6 + 30, tree3.getWidth() * 9 / 10, tree3.getHeight() * 9 / 10, null);
+        g2.drawImage(bush1.getImage(), tileSize * 12, tileSize * 0, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 13, tileSize * 0, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 12, tileSize * 1, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 13, tileSize * 1, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 14, tileSize * 1, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 7, tileSize * 2, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 7, tileSize * 3, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 7, tileSize * 4, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 7, tileSize * 5, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 7, tileSize * 6, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 7, tileSize * 7, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0, tileSize * 0 - 40, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 1, tileSize * 0 - 30, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 1 + 20, tileSize * 0 - 20, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 2, tileSize * 0 - 35, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 2 + 20, tileSize * 0 - 40, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 3, tileSize * 0 - 50, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 4, tileSize * 0 - 70, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 20, tileSize * 1, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 20, tileSize * 1 - 30, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 20, tileSize * 5, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 30, tileSize * 6 + 30, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 10, tileSize * 6, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 5, tileSize * 7, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 10, tileSize * 7 - 30, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 30, tileSize * 7 + 30, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 1, tileSize * 4, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 3, tileSize * 5, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 2, tileSize * 7, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 2, tileSize * 8, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 2, tileSize * 7, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 0, tileSize * 6, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 1, tileSize * 6, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 0, tileSize * 7, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 1, tileSize * 7, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 2, tileSize * 7, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 9 - 30, tileSize * 4, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 9 - 20, tileSize * 4 + 20, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 8, tileSize * 4 + 30, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 9 + 40, tileSize * 4, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 9 + 50, tileSize * 4 + 50, bush5.getWidth(), bush5.getHeight(), null);
+
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 20, tileSize * 2 + 10, tree1.getWidth() * 1, tree1.getHeight() * 2, null);
+        g2.drawImage(house.getImage(), tileSize * 0 - 20, tileSize * 3 + 30, house.getWidth() * 1 + 20, house.getHeight() * 1 + 20, null);
+        g2.drawImage(bridge.getImage(), tileSize * 5 - 10, tileSize * 1 + 3, bridge.getWidth() + 20, bridge.getHeight() + 10, null);
+        g2.drawImage(bridge.getImage(), tileSize * 12 - 10, tileSize * 1 + 3, bridge.getWidth() + 20, bridge.getHeight() + 10, null);
+        g2.drawImage(bridge.getImage(), tileSize * 12 - 10, tileSize * 3 + 3, bridge.getWidth() + 20, bridge.getHeight() + 10, null);
+        g2.drawImage(bridge.getImage(), tileSize * 6 - 10, tileSize * 3 + 3, bridge.getWidth() + 20, bridge.getHeight() + 10, null);
+        g2.drawImage(bridge.getImage(), tileSize * 7 - 10, tileSize * 5 + 3, bridge.getWidth() + 20, bridge.getHeight() + 10, null);
+        g2.drawImage(bridge.getImage(), tileSize * 12 - 10, tileSize * 5 + 3, bridge.getWidth() + 20, bridge.getHeight() + 10, null);
+        g2.drawImage(house.getImage(), tileSize * 9, tileSize * 4 + 30, house.getWidth(), house.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 0 - 20, tileSize * 3 + 10, tree1.getWidth() * 1, tree1.getHeight() * 2, null);
+        g2.drawImage(tree1.getImage(), tileSize * 14 - 40, tileSize * 0 - 40, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 12 + 30, tileSize * 0 - 15, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 14 - 10, tileSize * 0 - 10, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 11 - 15, tileSize * 0 - 40, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(bush5.getImage(), tileSize * 13, tileSize * 4, bush5.getWidth(), bush5.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 2, tileSize * 8, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 5, tileSize * 6, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 11, tileSize * 7, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 4, tileSize * 7, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 3, tileSize * 4, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 8, tileSize * 2, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 2, tileSize * 7, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 1, tileSize * 9, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 5, tileSize * 0, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 7, tileSize * 0, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 4, tileSize * 0, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 8, tileSize * 0, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(bush1.getImage(), tileSize * 3, tileSize * 4, bush1.getWidth(), bush1.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 8, tileSize * 2, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush3.getImage(), tileSize * 2, tileSize * 7, bush3.getWidth(), bush3.getHeight(), null);
+        g2.drawImage(bush4.getImage(), tileSize * 1, tileSize * 1, bush4.getWidth(), bush4.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 3 - 100, tileSize * 5 + 40, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 4, tileSize * 0 - 30, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 2, tileSize * 0, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree1.getImage(), tileSize * 1, tileSize * 9, tree1.getWidth(), tree1.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 5, tileSize * 4 - 20, tree2.getWidth(), tree2.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 7, tileSize * 4 - 20, tree2.getWidth(), tree2.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 4, tileSize * 2, tree2.getWidth(), tree2.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 10, tileSize * 4 - 20, tree2.getWidth(), tree2.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 15, tileSize * 5 - 20, tree2.getWidth(), tree2.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 14 + 30, tileSize * 4 - 20, tree2.getWidth(), tree2.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 10, tileSize * -20, tree2.getWidth(), tree2.getHeight(), null);
+        g2.drawImage(tree2.getImage(), tileSize * 14 + 30, tileSize * 7 - 20, tree2.getWidth(), tree2.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 14 + 30, tileSize * 7 + 50, bush2.getWidth(), bush2.getHeight(), null);
+        g2.drawImage(bush2.getImage(), tileSize * 14 + 10, tileSize * 7 - 50, bush2.getWidth(), bush2.getHeight(), null);
     }
 
     public void drawRotate(Graphics2D g2, BufferedImage img, int x, int y, int width, int height, double angle) {
@@ -689,15 +990,22 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void nextLevel() {
-        level += 1;
-        currentWave = 0;
-        allTower.clear();
-        coin = 300;
-        baseHP = 1000;
-        isEverLost = false;
-        tileManager.loadMap();
-        tileManager.getTileImage();
-        prepareWave();
+        if (level < 4) {
+            level += 1;
+            currentWave = 0;
+            allTower.clear();
+            allEnemy.clear();
+            isEverLost = false;
+            coin = 300;
+            baseHP = 1000;
+            isEverLost = false;
+            tileManager.loadMap();
+            tileManager.getTileImage();
+            prepareWave();
+        } else {
+            gameThread = null;
+            controller.returnToMenu();
+        }
     }
 
     public void replay() {

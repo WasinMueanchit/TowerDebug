@@ -195,42 +195,42 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
                 int cost = 0;
                 switch (characterSelected) {
                     case "Gladiator":
-                        cost = 50;
+                        cost = Gladiator.getCost();
                         if (gamePanel.getCoin() - cost >= 0) {
                             allTower.add(new Gladiator(gamePanel, x, y));
                             gamePanel.setCoin(gamePanel.getCoin() - cost);
                         }
                         break;
                     case "Valkyrie":
-                        cost = 100;
+                        cost = Valkyrie.getCost();
                         if (gamePanel.getCoin() - cost >= 0) {
                             allTower.add(new Valkyrie(gamePanel, x, y));
                             gamePanel.setCoin(gamePanel.getCoin() - cost);
                         }
                         break;
                     case "Saolin":
-                        cost = 130;
+                        cost = Saolin.getCost();
                         if (gamePanel.getCoin() - cost >= 0) {
                             allTower.add(new Saolin(gamePanel, x, y));
                             gamePanel.setCoin(gamePanel.getCoin() - cost);
                         }
                         break;
                     case "Ninja":
-                        cost = 120;
+                        cost = Ninja.getCost();
                         if (gamePanel.getCoin() - cost >= 0) {
                             allTower.add(new Ninja(gamePanel, x, y));
                             gamePanel.setCoin(gamePanel.getCoin() - cost);
                         }
                         break;
                     case "Pirate":
-                        cost = 150;
+                        cost = Pirate.getCost();
                         if (gamePanel.getCoin() - cost >= 0) {
                             allTower.add(new Pirate(gamePanel, x, y));
                             gamePanel.setCoin(gamePanel.getCoin() - cost);
                         }
                         break;
                     case "Pharaoh":
-                        cost = 150;
+                        cost = Pharaoh.getCost();
                         if (gamePanel.getCoin() - cost >= 0) {
                             allTower.add(new Pharaoh(gamePanel, x, y));
                             gamePanel.setCoin(gamePanel.getCoin() - cost);

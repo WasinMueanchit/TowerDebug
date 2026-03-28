@@ -88,7 +88,7 @@ public class Controller implements ActionListener {
     
     private void startGame(int level) {
         ArrayList<Integer> selectedHeroIds = selectHero.getSelectedHeroes();
-        String[] heroDatabase = {"Pharaoh", "Valkyrie", "Saolin", "Ninja", "Gladiator", "Pirate"};
+        String[] heroDatabase = { "Gladiator","Valkyrie", "Pirate","Ninja","Saolin","Pharaoh"};
         
        ArrayList<String> chosenHeroNames = new ArrayList<>();
        for (int id : selectedHeroIds) {

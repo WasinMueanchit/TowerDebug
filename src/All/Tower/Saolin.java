@@ -8,6 +8,7 @@ public class Saolin extends Tower {
     private static int solidWidth = 24;
     private static int solidHeight = 40;
     private static int baseRange = 200;
+    private static int cost = 130;
     private int level = 1;
 
     public Saolin(GamePanel gamePanel, int x, int y) {
@@ -30,6 +31,7 @@ public class Saolin extends Tower {
 
     @Override
     public void levelUp() {
+        int level = super.getLevel();
         if (level >= costs.length) {
             return;
         }
@@ -38,7 +40,7 @@ public class Saolin extends Tower {
 
         if (currentCoin >= cost) {
             super.getGamePanel().setCoin(currentCoin - cost);
-            level++;
+            super.setLevel(level + 1);
             super.setDamage(damages[level - 1]);
             super.setRange(range[level - 1]);
             super.setAttackSpeed(attackSpeed[level - 1]);
@@ -55,5 +57,14 @@ public class Saolin extends Tower {
 
     public static int getBaseRange() {
         return baseRange;
+    }
+
+    public static int getCost() {
+        return cost;
+    }
+
+    @Override
+    public int[] getUpGradeCosts() {
+        return costs;
     }
 }

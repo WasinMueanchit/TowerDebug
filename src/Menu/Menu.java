@@ -22,7 +22,7 @@ public class Menu {
             }
         };
         bgPanel.setLayout(null);
-        logo = new JLabel(new ImageIcon(getClass().getResource("Logo.png")));
+        logo = new JLabel(new ImageIcon(getClass().getResource("../source/GUI_IMAGE/Logo.png")));
         start = new JButton();
         hero = new JButton();
         exit = new JButton();
@@ -33,7 +33,7 @@ public class Menu {
         
         int newLogoW = 450;
         int newLogoH = 250;
-        logo = new JLabel(getScaledIcon("Logo.png", newLogoW, newLogoH));
+        logo = new JLabel(getScaledIcon("../source/GUI_IMAGE/Logo.png", newLogoW, newLogoH));
         logo.setBounds(255, 0, newLogoW, newLogoH);
         start.setBounds(380, 250, 200, 70);
         hero.setBounds(380, 330, 200, 70);

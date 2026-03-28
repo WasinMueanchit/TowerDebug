@@ -1,6 +1,5 @@
 package Game;
 
-
 import All.Tower.Tower;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -21,9 +20,9 @@ public class UpgradeUI {
     private RoundRectangle2D sellButton;
 
     public UpgradeUI() {
-        upgradeUI = new RoundRectangle2D.Double(-20, 150, 200, 200, 30, 30);
-        upgradeButton = new RoundRectangle2D.Double(10, 300, 80, 25, 8, 8);
-        sellButton = new RoundRectangle2D.Double(100, 300, 60, 25, 8, 8);
+        upgradeUI = new RoundRectangle2D.Double(-20, 150, 200, 240, 30, 30);
+        upgradeButton = new RoundRectangle2D.Double(10, 300, 160, 25, 8, 8);
+        sellButton = new RoundRectangle2D.Double(10, 340, 50, 25, 8, 8);
     }
 
     public void draw(Graphics2D g2) {
@@ -46,7 +45,7 @@ public class UpgradeUI {
         // Draw text
         g2.setColor(Color.white);
         g2.setFont(new Font("Arial", Font.BOLD, 18));
-        g2.drawString(name, 10, 195);
+        g2.drawString(name + "  Lvl." + character.getLevel(), 10, 195);
         g2.setFont(new Font("Arial", Font.PLAIN, 12));
         g2.drawString("Damage: " + damage, 10, 220);
         g2.drawString("Attack Speed: " + String.format("%.2f", attackSpeed) + "/s", 10, 240);
@@ -59,9 +58,14 @@ public class UpgradeUI {
         g2.fill(sellButton);
 
         g2.setColor(Color.white);
-        g2.drawString("Upgrade", 23, 317);
-        g2.drawString("Sell", 118, 317);
-        
+        if (character.getLevel() < character.getUpGradeCosts().length) {
+            g2.drawString("Upgrade: " + character.getUpGradeCosts()[character.getLevel()] + "$", 23, 317);
+        } else {
+            g2.drawString("Upgrade: MAX", 23, 317);
+
+        }
+        g2.drawString("Sell", 25, 357);
+
         //Draw border button
         g2.setColor(new Color(46, 32, 25));
         g2.setStroke(new BasicStroke(4));
@@ -80,8 +84,8 @@ public class UpgradeUI {
     public RoundRectangle2D getUpgradeButton() {
         return upgradeButton;
     }
-    
-    public RoundRectangle2D getSellButton(){
+
+    public RoundRectangle2D getSellButton() {
         return sellButton;
     }
 }
