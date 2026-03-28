@@ -33,12 +33,12 @@ public class Controller implements ActionListener {
 
     public void init() {
         menuscreen.startBut().addActionListener(this);
+        menuscreen.HeroBut().addActionListener(this);
         menuscreen.exittBut().addActionListener(this);
-        selectmap.backBut().addActionListener(this);
         
-        selectHero.getNextBtn().addActionListener(this);
         selectHero.getBackBtn().addActionListener(this);
         
+        selectmap.backBut().addActionListener(this);
         selectmap.getLevel1Btn().addActionListener(this);
         selectmap.getLevel2Btn().addActionListener(this);
         selectmap.getLevel3Btn().addActionListener(this);
@@ -53,23 +53,24 @@ public class Controller implements ActionListener {
         mainFrame.repaint(); 
     }
     public void returnToMenu() {
+        selectmap.updateUnlocks(unlockedLevel);
+        selectHero.updateUnlocksHero(unlockedLevel);
         switchScreen(menuscreen.getPanel());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == menuscreen.startBut()) {
-            switchScreen(selectHero.getPanel());
-
-        } else if (e.getSource() == selectHero.getNextBtn()) {
-            selectmap.updateUnlocks(unlockedLevel);
             switchScreen(selectmap.getPanel());
 
         } else if (e.getSource() == selectHero.getBackBtn()) {
             switchScreen(menuscreen.getPanel());
 
-        } else if (e.getSource() == selectmap.backBut()) {
+        } else if (e.getSource() == menuscreen.HeroBut()){
             switchScreen(selectHero.getPanel());
+            
+        } else if (e.getSource() == selectmap.backBut()) {
+            switchScreen(menuscreen.getPanel());
 
         } else if (e.getSource() == menuscreen.exittBut()) {
             System.exit(0);
@@ -87,18 +88,13 @@ public class Controller implements ActionListener {
     
     private void startGame(int level) {
         ArrayList<Integer> selectedHeroIds = selectHero.getSelectedHeroes();
-        String[] heroDatabase = {"Gladiator", "Valkyrie", "Saolin", "Ninja", "Pirate", "Pharaoh"};
+        String[] heroDatabase = {"Pharaoh", "Valkyrie", "Saolin", "Ninja", "Gladiator", "Pirate"};
         
-//        ArrayList<String> chosenHeroNames = new ArrayList<>();
-//        for (int id : selectedHeroIds) {
-//            chosenHeroNames.add(heroDatabase[id]);
-//        }
-        ArrayList<String> chosenHeroNames = new ArrayList<>();
-        chosenHeroNames.add("Gladiator");
-        chosenHeroNames.add("Valkyrie");
-        chosenHeroNames.add("Saolin");
-        chosenHeroNames.add("Ninja");
-        chosenHeroNames.add("Pirate");
+       ArrayList<String> chosenHeroNames = new ArrayList<>();
+       for (int id : selectedHeroIds) {
+           chosenHeroNames.add(heroDatabase[id]);
+       }
+        
         GamePanel gamePanel = new GamePanel(this, chosenHeroNames);
 
         if (level != 1) {
@@ -109,6 +105,7 @@ public class Controller implements ActionListener {
         switchScreen(gamePanel);
         gamePanel.requestFocus();
     }
+    
 }
 
 

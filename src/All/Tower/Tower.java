@@ -258,4 +258,8 @@ public abstract class Tower implements UpdatableAndDrawable{
         this.placedSolidArea = placedSolidArea;
     }
     
+    public GamePanel getGamePanel(){
+        return gamePanel;
+    }
+    
 }

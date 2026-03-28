@@ -15,6 +15,7 @@ public class UpgradeUI {
     private double damage;
     private double attackSpeed;
     private int range;
+    private int reward;
     private RoundRectangle2D upgradeUI;
     private RoundRectangle2D upgradeButton;
     private RoundRectangle2D sellButton;
@@ -31,6 +32,7 @@ public class UpgradeUI {
         damage = character.getDamage();
         attackSpeed = character.getAttackSpeed() / 60;
         range = character.getRange();
+        reward = character.getReward();
 
         // Fill color
         g2.setColor(new Color(92, 64, 51));
@@ -45,10 +47,11 @@ public class UpgradeUI {
         g2.setColor(Color.white);
         g2.setFont(new Font("Arial", Font.BOLD, 18));
         g2.drawString(name, 10, 195);
-        g2.setFont(new Font("Arial", Font.PLAIN, 14));
-        g2.drawString("Damage: " + damage, 10, 225);
-        g2.drawString("Attack Speed: " + String.format("%.2f", attackSpeed) + "/s", 10, 250);
-        g2.drawString("Range: " + range, 10, 275);
+        g2.setFont(new Font("Arial", Font.PLAIN, 12));
+        g2.drawString("Damage: " + damage, 10, 220);
+        g2.drawString("Attack Speed: " + String.format("%.2f", attackSpeed) + "/s", 10, 240);
+        g2.drawString("Range: " + range, 10, 260);
+        g2.drawString("Reward: " + reward, 10, 280);
 
         // Fill button
         g2.setColor(new Color(164, 114, 91));

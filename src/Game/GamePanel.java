@@ -80,7 +80,6 @@ public class GamePanel extends JPanel implements Runnable {
     private Sound backGroundSound = new Sound();
 
     public GamePanel(Controller controller, ArrayList<String> allCharacterSelected) {
-        System.out.println(allCharacterSelected.toString());
         this.controller = controller;
         this.allCharacterSelected = allCharacterSelected;
         loadData = new LoadData(this);
@@ -306,6 +305,9 @@ public class GamePanel extends JPanel implements Runnable {
                 gameEnd.setIsFinishing(true);
                 sound.setSound("victory");
                 sound.play();
+                if (level == controller.unlockedLevel){
+                    controller.unlockedLevel++;
+                }
             }
         }
     }

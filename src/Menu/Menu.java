@@ -5,8 +5,8 @@ import javax.swing.*;
 
 public class Menu {
 
-    private JLabel name;
-    private JButton start, setting, exit;
+    private JLabel logo;
+    private JButton start, hero, exit;
     private JPanel bgPanel;
 
     public Menu() {
@@ -22,24 +22,26 @@ public class Menu {
             }
         };
         bgPanel.setLayout(null);
-        name = new JLabel("Tower Debug", SwingConstants.CENTER);
+        logo = new JLabel(new ImageIcon(getClass().getResource("Logo.png")));
         start = new JButton();
-        setting = new JButton();
+        hero = new JButton();
         exit = new JButton();
 
         setIconToButton(start, "../source/GUI_IMAGE/START.png", 250, 175);
-        setIconToButton(setting, "../source/GUI_IMAGE/SETTING.png", 250, 175);
+        setIconToButton(hero, "../source/GUI_IMAGE/HERO.png", 250, 175);
         setIconToButton(exit, "../source/GUI_IMAGE/EXIT.png", 250, 175);
-        name.setFont(new Font("Arial", Font.BOLD, 55));
+        
+        int newLogoW = 450;
+        int newLogoH = 250;
+        logo = new JLabel(getScaledIcon("Logo.png", newLogoW, newLogoH));
+        logo.setBounds(255, 0, newLogoW, newLogoH);
+        start.setBounds(380, 250, 200, 70);
+        hero.setBounds(380, 330, 200, 70);
+        exit.setBounds(380, 410, 200, 70);
 
-        name.setBounds(0, 30, 960, 60);
-        start.setBounds(355, 150, 225, 90);
-        setting.setBounds(355, 250, 225, 90);
-        exit.setBounds(355, 360, 225, 90);
-
-        bgPanel.add(name);
+        bgPanel.add(logo);
         bgPanel.add(start);
-        bgPanel.add(setting);
+        bgPanel.add(hero);
         bgPanel.add(exit);
     }
 
@@ -59,6 +61,10 @@ public class Menu {
     public JButton startBut() {
         return start;
     }
+    
+    public JButton HeroBut(){
+        return hero;
+    }
 
     public JButton exittBut() {
         return exit;
@@ -67,4 +73,13 @@ public class Menu {
     public JPanel getPanel() {
         return bgPanel;
     }
+
+    public ImageIcon getScaledIcon(String path, int width, int height) {
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource(path)); // หรือ new ImageIcon(path) ตามการจัดเก็บไฟล์ของคุณ
+        Image originalImage = originalIcon.getImage();
+        // ใช้ SCALE_SMOOTH เพื่อคุณภาพที่ดีที่สุดตอนย่อ
+        Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImage);
+    }
+
 }

@@ -9,7 +9,7 @@ import javax.swing.*;
 public class SelectHero {
 
     private JPanel bgPanel;
-    private JButton back, nextBtn;
+    private JButton back;
     private JLabel topLabel, bottomLabel;
     private JButton[] topGrid = new JButton[6];
     private JButton[] bottomGrid = new JButton[5];
@@ -95,13 +95,7 @@ public class SelectHero {
                 }
             });
         }
-
-        nextBtn = new JButton("NEXT");
-        nextBtn.setFont(new Font("Arial", Font.BOLD, 28));
-        nextBtn.setForeground(Color.WHITE);
-        nextBtn.setBackground(new Color(30, 45, 55));
-        nextBtn.setBounds(740, 350, 160, 55);
-        bgPanel.add(nextBtn);
+        updateUnlocksHero(1);
     }
 
     private void updateBottomGrid() {
@@ -143,6 +137,39 @@ public class SelectHero {
         label.setFont(new Font("Arial", Font.BOLD, fontSize));
         return label;
     }
+    
+    public void updateUnlocksHero(int unlockLevel) {
+        setIconToButton(topGrid[0], "../source/GUI_IMAGE/Hero1.png", size, size);
+        topGrid[0].setEnabled(true);
+        setIconToButton(topGrid[1], "../source/GUI_IMAGE/Hero2.png", size, size);
+        topGrid[1].setEnabled(true);
+        setIconToButton(topGrid[2], "../source/GUI_IMAGE/Hero3.png", size, size);
+        topGrid[2].setEnabled(true);
+        
+        if (unlockLevel >= 2) {
+            setIconToButton(topGrid[3], "../source/GUI_IMAGE/Hero4.png", size, size);
+            topGrid[3].setEnabled(true);
+        } else {
+            setIconToButton(topGrid[3], "../source/GUI_IMAGE/LockHero.png", size, size);
+            topGrid[3].setEnabled(false);
+        }
+        
+        if (unlockLevel >= 3) {
+            setIconToButton(topGrid[4], "../source/GUI_IMAGE/Hero5.png", size, size);
+            topGrid[4].setEnabled(true);
+        } else {
+            setIconToButton(topGrid[4], "../source/GUI_IMAGE/LockHero.png", size, size);
+            topGrid[4].setEnabled(false);
+        }
+        
+        if (unlockLevel >= 4) {
+            setIconToButton(topGrid[5], "../source/GUI_IMAGE/Hero6.png", size, size);
+            topGrid[5].setEnabled(true);
+        } else {
+            setIconToButton(topGrid[5], "../source/GUI_IMAGE/LockHero.png", size, size);
+            topGrid[5].setEnabled(false);
+        }
+    }
 
     private void setIconToButton(JButton button, String imagePath, int width, int height) {
         java.net.URL imgURL = getClass().getResource(imagePath);
@@ -165,7 +192,6 @@ public class SelectHero {
     }
 
     public JButton getBackBtn() { return back; }
-    public JButton getNextBtn() { return nextBtn; }
     public JPanel getPanel() { return bgPanel; }
     
     public ArrayList<Integer> getSelectedHeroes() {

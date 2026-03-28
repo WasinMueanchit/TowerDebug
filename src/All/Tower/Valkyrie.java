@@ -8,12 +8,13 @@ public class Valkyrie extends Tower {
     private static int solidWidth = 24;
     private static int solidHeight = 40;
     private static int baseRange = 70;
+    private int level = 1;
 
     public Valkyrie(GamePanel gamePanel, int x, int y) {
         super(gamePanel, x, y, "Valkyrie");
         super.setRange(baseRange);
         super.setDamage(10);
-        super.setAttackSpeed(10);
+        super.setAttackSpeed(30);
         super.setSellCost(50);
         super.setAttackType("Single");
         super.setIsGhostBuster(false);
@@ -22,10 +23,26 @@ public class Valkyrie extends Tower {
         super.setPlacedSolidArea(new Rectangle(x - solidWidth / 2, y - solidHeight / 2, solidWidth, solidHeight));
     }
 
+    int[] costs = {0, 70, 120};
+    int[] damages = {10, 15, 20};
+    int[] range = {70, 90, 110};
+    int[] attackSpeed = {30, 25, 20};
+
     @Override
     public void levelUp() {
-        super.setRange(super.getRange() + 10);
-        super.setAttackSpeed(super.getAttackSpeed() - 2);
+        if (level >= costs.length) {
+            return;
+        }
+        int cost = costs[level];
+        int currentCoin = super.getGamePanel().getCoin();
+
+        if (currentCoin >= cost) {
+            super.getGamePanel().setCoin(currentCoin - cost);
+            level++;
+            super.setDamage(damages[level - 1]);
+            super.setRange(range[level - 1]);
+            super.setAttackSpeed(attackSpeed[level - 1]);
+        }
     }
 
     public static int getSolidWidth() {
