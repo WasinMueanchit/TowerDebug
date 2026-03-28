@@ -44,10 +44,10 @@ public class WaveManager {
         wave5.put("Cyclops", 1);
 
         allWaveLevel1.add(wave1);
-//        allWaveLevel1.add(wave2);
-//        allWaveLevel1.add(wave3);
-//        allWaveLevel1.add(wave4);
-//        allWaveLevel1.add(wave5);
+        allWaveLevel1.add(wave2);
+        allWaveLevel1.add(wave3);
+        allWaveLevel1.add(wave4);
+        allWaveLevel1.add(wave5);
     }
 
     public void setWaveInLevel2()   {
