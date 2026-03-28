@@ -140,8 +140,8 @@ public class CollisionChecker {
 
     public void checkSolidAsset(Pointer pointer) {
         if (!pointer.getCharacterSelected().equals("") && pointer.getSolidArea() != null) {
-            ArrayList<SolidAsset> allSolidAsset = gamePanel.getAllSolidAsset();
-            for (SolidAsset solidAsset : allSolidAsset) {
+            ArrayList<SolidArea> allSolidAsset = gamePanel.getAllSolidAsset();
+            for (SolidArea solidAsset : allSolidAsset) {
                 int width = (int) pointer.getSolidArea().getWidth();
                 int height = (int) pointer.getSolidArea().getHeight();
                 Rectangle characterSolidArea = new Rectangle(pointer.getX() - (width / 2), pointer.getY() - (height / 2), width, height);

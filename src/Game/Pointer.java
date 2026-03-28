@@ -31,6 +31,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
     private boolean holdOnUpgradeUI = false;
     private boolean holdOnUpgradeButton = false;
     private boolean holdOnSellButton = false;
+    private boolean isShowUpgrade = false;
     private GameEnd gameEnd;
     private boolean holdOnToMenuButton = false;
     private boolean holdOnNextLevelOrRetryButton = false;
@@ -246,17 +247,20 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
             gamePanel.getSound().setSound("buttonClick");
             gamePanel.getSound().play();
             towerOnShowUpgrade = towerOnHold;
+            isShowUpgrade = true;
         } else if (towerOnShowUpgrade != null && towerOnHold == null && holdOnUpgradeUI == false) {
             towerOnShowUpgrade = null;
-        } else if (holdOnUpgradeButton == true) {
+            isShowUpgrade = false;
+        } else if (holdOnUpgradeButton == true && isShowUpgrade == true) {
             gamePanel.getSound().setSound("buttonClick");
             gamePanel.getSound().play();
             towerOnShowUpgrade.levelUp();
-        } else if (holdOnSellButton == true && towerOnShowUpgrade != null) {
+        } else if (holdOnSellButton == true && towerOnShowUpgrade != null && isShowUpgrade == true) {
             gamePanel.getSound().setSound("pickupCoin");
             gamePanel.getSound().play();
             towerOnShowUpgrade.sell();
             towerOnShowUpgrade = null;
+            isShowUpgrade = false;
         } else if (holdOnToMenuButton == true) {
             gamePanel.getSound().setSound("buttonClick");
             gamePanel.getSound().play();
@@ -284,6 +288,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             characterSelected = "";
+            isShowUpgrade = false;
         }
     }
 

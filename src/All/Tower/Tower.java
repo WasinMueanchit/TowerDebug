@@ -3,6 +3,7 @@ package All.Tower;
 import All.Enemy.Enemy;
 import Game.GamePanel;
 import Game.Particle;
+import Game.SolidArea;
 import Game.UpdatableAndDrawable;
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -36,6 +37,7 @@ public abstract class Tower implements UpdatableAndDrawable {
 
     //Image
     private Rectangle placedSolidArea; //Solid Area When placed
+    private SolidArea solidArea; //Solid Area When placed
 
     private int count = 0;
     private boolean isSold = false;
@@ -257,6 +259,8 @@ public abstract class Tower implements UpdatableAndDrawable {
 
     public void setPlacedSolidArea(Rectangle placedSolidArea) {
         this.placedSolidArea = placedSolidArea;
+        this.solidArea = new SolidArea(placedSolidArea);
+        gamePanel.getAllSolidArea().add(solidArea);
     }
 
     public GamePanel getGamePanel() {
@@ -266,11 +270,15 @@ public abstract class Tower implements UpdatableAndDrawable {
     public int getLevel() {
         return level;
     }
-    
+
     public void setLevel(int level) {
         this.level = level;
     }
 
     public abstract int[] getUpGradeCosts();
+    
+    public SolidArea getSolidArea(){ //Red Area in allSolidArea ArrayList
+        return solidArea;
+    }
 
 }

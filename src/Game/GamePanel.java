@@ -46,13 +46,14 @@ public class GamePanel extends JPanel implements Runnable {
     private double baseHP = 1000;
     private int coin = 300;
     private boolean isEverLost = false;
+    private int countStartWave = 0;
+    private boolean isStartWave = false;
 
     //Monster
     private ArrayList<Enemy> allEnemy = new ArrayList<>();
     private int spawnCounter = 0;
     private WaveManager waveManager;
     private int waveCooldown = 0;
-    //LLM
     private int currentWave = 0;
     ArrayList<String> spawnQueue = new ArrayList<>();
 
@@ -68,7 +69,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     //Assets
     private LoadData loadData;
-    private ArrayList<SolidAsset> allSolidAsset;
+
+    //Solid Area
+    private ArrayList<SolidArea> allSolidArea;
 
     //UI
     private ArrayList<String> allCharacterSelected;
@@ -87,14 +90,12 @@ public class GamePanel extends JPanel implements Runnable {
         this.setBackground(Color.black);
         waveManager = new WaveManager();
         gameEnd = new GameEnd(this);
-        allSolidAsset = new ArrayList<>();
+        allSolidArea = new ArrayList<>();
 
         allWaypoint.add(waypointsLevel1);
         allWaypoint.add(waypointsLevel2);
         allWaypoint.add(waypointsLevel3);
         allWaypoint.add(waypointsLevel4);
-
-        prepareWave();
 
         collisionChecker = new CollisionChecker(this);
         pointer = new Pointer(this, gameEnd);
@@ -113,6 +114,8 @@ public class GamePanel extends JPanel implements Runnable {
 
         gameThread = new Thread(this);
         gameThread.start();
+
+        setAllSolidArea();
 
         backGroundSound.setSound("background");
         backGroundSound.play();
@@ -175,9 +178,19 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameEnd.getIsFinishing() == true) {
             gameEnd.drawGameEndUI(g2);
         }
+//        for (SolidArea solidAsset : allSolidArea) {
+//            g2.setColor(Color.red);
+//            g2.fill(solidAsset.getSolidArea());
+//        }
     }
 
     public void update() {
+        if (countStartWave >= FPS * 10 && isStartWave == false) { //Delay spawn enemy when start game
+            isStartWave = true;
+            prepareWave();
+        }
+        countStartWave++;
+
         pointer.update();
         for (int i = allEnemy.size() - 1; i >= 0; i--) {
             Enemy enemy = allEnemy.get(i);
@@ -192,6 +205,7 @@ public class GamePanel extends JPanel implements Runnable {
             Tower tower = allTower.get(i);
             if (tower.getIsSold()) {
                 coin += tower.getSellCost();
+                allSolidArea.remove(tower.getSolidArea());
                 allTower.remove(i);
             } else {
                 tower.update();
@@ -213,7 +227,6 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    //LLM
     public void prepareWave() {
         spawnQueue.clear();
 
@@ -228,10 +241,9 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
-    //LLM
     public void spawnEnemy() {
         spawnCounter++;
-        if (spawnCounter >= FPS && spawnQueue.size() > 0) {
+        if (spawnCounter >= FPS * 2 && spawnQueue.size() > 0) {
             String enemyType = spawnQueue.remove(0);
             switch (enemyType) {
                 case "Female Goblin":
@@ -281,10 +293,9 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    //LLM
     public void checkWave() {
         if (spawnQueue.size() == 0 /*&& allEnemy.size() == 0*/) {
-            if (waveCooldown >= FPS * 10) {
+            if (waveCooldown >= FPS * 15) {
                 waveCooldown = 0;
                 if (currentWave < waveManager.getAllWaveAtLevel(level).size() - 1) {
                     currentWave++;
@@ -339,8 +350,55 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawString(currentWave + 1 + "/" + waveManager.getAllWaveAtLevel(level).size(), 15, 30);
     }
 
+    public void setAllSolidArea() {
+        allSolidArea.clear();
+        HashMap<String, Asset> allAssetLevel1 = loadData.getAllAssetLevel1();
+        HashMap<String, Asset> allAssetLevel2 = loadData.getAllAssetLevel2();
+        HashMap<String, Asset> allAssetLevel3 = loadData.getAllAssetLevel3();
+        HashMap<String, Asset> allAssetLevel4 = loadData.getAllAssetLevel4();
+        switch (level) {
+            case 1:
+                Asset lava = allAssetLevel1.get("decor_6.png");
+                allSolidArea.add(new SolidArea(tileSize * 4, tileSize * 3, lava.getWidth(), lava.getHeight()));
+                allSolidArea.add(new SolidArea(tileSize * 10 + 30, tileSize * 3 + 30, lava.getWidth(), lava.getHeight()));
+                break;
+            case 2:
+                Asset hole2 = allAssetLevel2.get("decor_8.png");
+                Asset hole3 = allAssetLevel2.get("decor_9.png");
+                allSolidArea.add(new SolidArea(0, 0, 230, 170));
+                allSolidArea.add(new SolidArea(780, 0, 180, 170));
+                allSolidArea.add(new SolidArea(780, 0, 180, 170));
+                allSolidArea.add(new SolidArea(tileSize * 0, tileSize * 7 + 20, hole2.getWidth(), hole2.getHeight()));
+                allSolidArea.add(new SolidArea(tileSize * 14, tileSize * 7 + 40, hole3.getWidth(), hole3.getHeight()));
+                break;
+            case 3:
+                Asset lake = allAssetLevel3.get("lake.png");
+                Asset tree1 = allAssetLevel3.get("tree_1.png");
+                Asset tree2 = allAssetLevel3.get("tree_2.png");
+                Asset gate = allAssetLevel3.get("decor_5.png");
+                Asset stone2 = allAssetLevel3.get("stone_2.png");
+                allSolidArea.add(new SolidArea(tileSize * 9, tileSize * 6, lake.getWidth() * 3, lake.getHeight() * 3));
+                allSolidArea.add(new SolidArea(tileSize * 1, tileSize * 0, 250, 200));
+                allSolidArea.add(new SolidArea(tileSize * 5, tileSize * 3, tree1.getWidth() * 3, tree1.getHeight() * 3 - 60));
+                allSolidArea.add(new SolidArea(tileSize * 2, tileSize * 6, tree2.getWidth() * 2, tree2.getHeight() * 2 - 40));
+                allSolidArea.add(new SolidArea(tileSize * 2, tileSize * 6, tree2.getWidth() * 2, tree2.getHeight() * 2 - 40));
+                allSolidArea.add(new SolidArea(tileSize * 0 - 20, tileSize * 4 - 20, tree1.getWidth() * 3, tree1.getHeight() * 3 - 60));
+                allSolidArea.add(new SolidArea(tileSize * 1 + 10, tileSize * 0 + 20, tree2.getWidth() * 2, tree2.getHeight() * 2 - 40));
+                allSolidArea.add(new SolidArea(tileSize * 10, tileSize * 3 - 10, gate.getWidth() * 3 - 20, gate.getHeight() * 3 - 20));
+                allSolidArea.add(new SolidArea(tileSize * 12, tileSize * 2 - 20, stone2.getWidth() * 3, stone2.getHeight() * 3 - 50));
+                break;
+            case 4:
+                Asset house = allAssetLevel4.get("decor_1.png");
+                allSolidArea.add(new SolidArea(0, 0, 300, 80));
+                allSolidArea.add(new SolidArea(0, 0, 30, 250));
+                allSolidArea.add(new SolidArea(0, 280, 30, 500));
+                allSolidArea.add(new SolidArea(tileSize * 11, 0, 400, 80));
+                allSolidArea.add(new SolidArea(tileSize * 9, tileSize * 4 + 30, house.getWidth(), house.getHeight() - 40));
+                return;
+        }
+    }
+
     public void drawAssetLevel1(Graphics2D g2) {
-        allSolidAsset.clear();
         HashMap<String, Asset> allAssetLevel1 = loadData.getAllAssetLevel1();
         Asset house = allAssetLevel1.get("decor_2.png");
         Asset stone6 = allAssetLevel1.get("stone_6.png");
@@ -355,8 +413,6 @@ public class GamePanel extends JPanel implements Runnable {
         Asset stone3 = allAssetLevel1.get("stone_3.png");
         Asset stone4 = allAssetLevel1.get("stone_4.png");
         Asset stone5 = allAssetLevel1.get("stone_5.png");
-        allSolidAsset.add(new SolidAsset(tileSize * 4, tileSize * 3, lava.getWidth(), lava.getHeight()));
-        allSolidAsset.add(new SolidAsset(tileSize * 10 + 30, tileSize * 3 + 30, lava.getWidth(), lava.getHeight()));
 
         g2.drawImage(house.getImage(), 0, tileSize * 3 - 20, house.getWidth(), house.getHeight(), null);
         g2.drawImage(stone6.getImage(), tileSize * 2, tileSize + 20, stone6.getWidth(), stone6.getHeight(), null);
@@ -422,15 +478,9 @@ public class GamePanel extends JPanel implements Runnable {
 
         drawRotate(g2, bridge.getImage(), tileSize * 6 + 2, tileSize * 2 + 6, bridge.getWidth() + 10, bridge.getHeight() + 14, 90);
         drawRotate(g2, bridge.getImage(), tileSize * 9 + 2, tileSize * 2 + 6, bridge.getWidth() + 10, bridge.getHeight() + 14, 90);
-
-//        for (SolidAsset solidAsset : allSolidAsset){
-//            g2.setColor(Color.red);
-//            g2.fill(solidAsset.getSolidArea());
-//        }
     }
 
     public void drawAssetLevel2(Graphics2D g2) {
-        allSolidAsset.clear();
         HashMap<String, Asset> allAssetLevel2 = loadData.getAllAssetLevel2();
         Asset cart = allAssetLevel2.get("decor_2.png");
         Asset tunnel = allAssetLevel2.get("decor_7.png");
@@ -451,11 +501,6 @@ public class GamePanel extends JPanel implements Runnable {
         Asset stone7 = allAssetLevel2.get("stone_7.png");
         Asset stone8 = allAssetLevel2.get("stone_8.png");
         Asset stone9 = allAssetLevel2.get("stone_9.png");
-        allSolidAsset.add(new SolidAsset(0, 0, 230, 170));
-        allSolidAsset.add(new SolidAsset(780, 0, 180, 170));
-        allSolidAsset.add(new SolidAsset(780, 0, 180, 170));
-        allSolidAsset.add(new SolidAsset(tileSize * 0, tileSize * 7 + 20, hole2.getWidth(), hole2.getHeight()));
-        allSolidAsset.add(new SolidAsset(tileSize * 14, tileSize * 7 + 40, hole3.getWidth(), hole3.getHeight()));
 
         g2.drawImage(tunnel.getImage(), tileSize * 0, tileSize * 0, tunnel.getWidth(), tunnel.getHeight(), null);
         g2.drawImage(rail.getImage(), tileSize * 2 - 20, tileSize * 1 - 10, rail.getWidth(), rail.getHeight(), null);
@@ -579,7 +624,7 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawImage(stone8.getImage(), tileSize * 15 - 6, tileSize * 7, stone8.getWidth(), stone8.getHeight(), null);
         g2.drawImage(stone9.getImage(), tileSize * 13 - 4, tileSize * 7, stone9.getWidth(), stone9.getHeight(), null);
 
-        //        for (SolidAsset solidAsset : allSolidAsset){
+        //        for (SolidArea solidAsset : allSolidArea){
 //            g2.setColor(Color.red);
 //            g2.fill(solidAsset.getSolidArea());
 //        }
@@ -668,6 +713,10 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawImage(stone4.getImage(), tileSize * 12, tileSize * 6, stone4.getWidth(), stone4.getHeight(), null);
         g2.drawImage(stone6.getImage(), tileSize * 14, tileSize * 5, stone6.getWidth(), stone6.getHeight(), null);
 
+//        for (SolidArea solidAsset : allSolidArea) {
+//            g2.setColor(Color.red);
+//            g2.fill(solidAsset.getSolidArea());
+//        }
     }
 
     public void drawAssetLevel4(Graphics2D g2) {
@@ -908,6 +957,11 @@ public class GamePanel extends JPanel implements Runnable {
         g2.drawImage(tree2.getImage(), tileSize * 14 + 30, tileSize * 7 - 20, tree2.getWidth(), tree2.getHeight(), null);
         g2.drawImage(bush2.getImage(), tileSize * 14 + 30, tileSize * 7 + 50, bush2.getWidth(), bush2.getHeight(), null);
         g2.drawImage(bush2.getImage(), tileSize * 14 + 10, tileSize * 7 - 50, bush2.getWidth(), bush2.getHeight(), null);
+
+//        for (SolidArea solidAsset : allSolidArea) {
+//            g2.setColor(Color.red);
+//            g2.fill(solidAsset.getSolidArea());
+//        }
     }
 
     public void drawRotate(Graphics2D g2, BufferedImage img, int x, int y, int width, int height, double angle) {
@@ -1001,7 +1055,9 @@ public class GamePanel extends JPanel implements Runnable {
             isEverLost = false;
             tileManager.loadMap();
             tileManager.getTileImage();
-            prepareWave();
+            isStartWave = false;
+            countStartWave = 0;
+            setAllSolidArea();
         } else {
             gameThread = null;
             controller.returnToMenu();
@@ -1015,11 +1071,13 @@ public class GamePanel extends JPanel implements Runnable {
         coin = 300;
         baseHP = 1000;
         isEverLost = false;
-        prepareWave();
+        isStartWave = false;
+        countStartWave = 0;
+        setAllSolidArea();
     }
 
-    public ArrayList<SolidAsset> getAllSolidAsset() {
-        return allSolidAsset;
+    public ArrayList<SolidArea> getAllSolidAsset() {
+        return allSolidArea;
     }
 
     public int getFPS() {
@@ -1049,5 +1107,9 @@ public class GamePanel extends JPanel implements Runnable {
     public void stopGameAndReturnToMenu() {
         gameThread = null;
         controller.returnToMenu();
+    }
+
+    public ArrayList<SolidArea> getAllSolidArea() {
+        return allSolidArea;
     }
 }

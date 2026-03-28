@@ -24,6 +24,7 @@ public abstract class Enemy {
     private GamePanel gamePanel;
     private int reward;
     private int speedCount = 0;
+    private boolean isHealable;
     
     private Rectangle solidArea;
     
@@ -58,6 +59,9 @@ public abstract class Enemy {
     public void update() {
         if (health <= 0){
             alive = false;
+        }
+        if(isHealable == true && health - 8< maxHealth){
+            health += 8;
         }
         solidArea = new Rectangle((x+gamePanel.getTileSize()/2)-solidWidth/2, (y+gamePanel.getTileSize()/2)-solidHeight/2, solidWidth ,solidHeight);
         Point target = waypoints[currentTarget];
@@ -193,6 +197,10 @@ public abstract class Enemy {
 
     public void setSolidHeight(int solidHeight) {
         this.solidHeight = solidHeight;
+    }
+    
+    public void setIsHealable(boolean isHealable){
+        this.isHealable = isHealable;
     }
     
     

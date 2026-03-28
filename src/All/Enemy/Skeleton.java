@@ -16,5 +16,6 @@ public class Skeleton extends Enemy{
         super.setReward(10);
         super.setSolidWidth(solidWidth);
         super.setSolidHeight(solidHeight);
+        super.setIsHealable(true);
     }
 }
