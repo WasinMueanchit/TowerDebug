@@ -1,6 +1,6 @@
 package All.Tower;
 
-import All.GamePanel;
+import Game.GamePanel;
 import java.awt.Rectangle;
 
 public class Saolin extends Tower {

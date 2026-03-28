@@ -1,8 +1,8 @@
 package All.Enemy;
 
 
-import All.GamePanel;
-import All.Point;
+import Game.GamePanel;
+import Game.Point;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -48,7 +48,7 @@ public abstract class Enemy {
         this.isGhost = isGhost;
         this.x = waypoints[0].getX();
         this.y = waypoints[0].getY() - 20;
-        HashMap<String, ArrayList<BufferedImage>> femaleGoblinAnimation = gamePanel.getLoadAnimation().getAnimation(name);
+        HashMap<String, ArrayList<BufferedImage>> femaleGoblinAnimation = gamePanel.getLoadData().getAnimation(name);
         up = femaleGoblinAnimation.get("up");
         down = femaleGoblinAnimation.get("down");
         left = femaleGoblinAnimation.get("left");

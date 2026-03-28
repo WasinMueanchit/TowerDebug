@@ -1,10 +1,9 @@
 package All.Tower;
 
 import All.Enemy.Enemy;
-import All.Enemy.FemaleGoblin;
-import All.GamePanel;
-import All.Particle;
-import All.UpdatableAndDrawable;
+import Game.GamePanel;
+import Game.Particle;
+import Game.UpdatableAndDrawable;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -55,7 +54,7 @@ public abstract class Tower implements UpdatableAndDrawable{
         this.name = name;
         this.enemyInArea = new ArrayList<>();
         this.attackArea = new Ellipse2D.Double(x - range / 2, y - range / 2, range, range);
-        HashMap<String, ArrayList<BufferedImage>> assasinAnimation = gamePanel.getLoadAnimation().getAnimation(name);
+        HashMap<String, ArrayList<BufferedImage>> assasinAnimation = gamePanel.getLoadData().getAnimation(name);
         idle = assasinAnimation.get("idle");
         attacking = assasinAnimation.get("attacking");
     }

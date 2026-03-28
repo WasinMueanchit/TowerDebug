@@ -1,6 +1,6 @@
 package All.Tower;
 
-import All.GamePanel;
+import Game.GamePanel;
 import java.awt.Rectangle;
 
 public class Ninja extends Tower {
@@ -19,7 +19,6 @@ public class Ninja extends Tower {
         super.setIsGhostBuster(false);
         super.setCanCreateParticle(true, "Typhoon");
         super.setCanCreateMoney(false);
-        super.setReward(0);
         super.setPlacedSolidArea(new Rectangle(x - solidWidth / 2, y - solidHeight / 2, solidWidth, solidHeight));
     }
 

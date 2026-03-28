@@ -1,7 +1,7 @@
 package All.Enemy;
 
-import All.GamePanel;
-import All.Point;
+import Game.GamePanel;
+import Game.Point;
 
 public class EarthGolem extends Enemy{
     private static int solidWidth = 24;
