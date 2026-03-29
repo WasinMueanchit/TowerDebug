@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Particle {
+public class Particle implements Updatable, Drawable{
 
     private int x;
     private int y;
@@ -22,6 +22,7 @@ public class Particle {
         animation = LoadData.getAnimation("Particle").get(type);
     }
 
+    @Override
     public void update() {
         if (frame >= animation.size()) {
             isAlive = false;
@@ -29,6 +30,7 @@ public class Particle {
         }
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         if (frame >= animation.size()) {
             return;

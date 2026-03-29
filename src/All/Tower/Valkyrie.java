@@ -41,9 +41,9 @@ public class Valkyrie extends Tower {
         if (currentCoin >= cost) {
             super.getGamePanel().setCoin(currentCoin - cost);
             super.setLevel(level + 1);
-            super.setDamage(damages[level - 1]);
-            super.setRange(range[level - 1]);
-            super.setAttackSpeed(attackSpeed[level - 1]);
+            super.setDamage(damages[level]);
+            super.setRange(range[level]);
+            super.setAttackSpeed(attackSpeed[level]);
         }
     }
 

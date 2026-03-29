@@ -7,7 +7,7 @@ public class Cyclops extends Enemy{
     private static int solidWidth = 24;
     private static int solidHeight = 40;
     private int health = 2000;
-    private int speed = 1;
+    private int speed = 2;
     public Cyclops(GamePanel gamePanel, Point[] waypoints, boolean isGhost) {
         super(gamePanel, waypoints, isGhost, "Cyclops");
         super.setMaxHealth(health);

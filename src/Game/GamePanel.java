@@ -46,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
     private double baseHP = 1000;
     private int coin = 300;
     private boolean isEverLost = false;
+    private boolean isEverWin = false;
     private int countStartWave = 0;
     private boolean isStartWave = false;
 
@@ -219,11 +220,13 @@ public class GamePanel extends JPanel implements Runnable {
                 particle.update();
             }
         }
-        if (baseHP <= 0 && isEverLost == false) {
-            gameEnd.setIsFinishing(true);
-            isEverLost = true;
-            sound.setSound("explosion");
-            sound.play();
+        if (baseHP <= 0) {
+            if (!isEverLost) {
+                gameEnd.setIsFinishing(true);
+                isEverLost = true;
+                sound.setSound("explosion");
+                sound.play();
+            }
         }
     }
 
@@ -294,6 +297,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void checkWave() {
+        if (isEverLost) {
+            return;
+        }
         if (spawnQueue.size() == 0 /*&& allEnemy.size() == 0*/) {
             if (waveCooldown >= FPS * 15) {
                 waveCooldown = 0;
@@ -311,12 +317,13 @@ public class GamePanel extends JPanel implements Runnable {
             }
             waveCooldown++;
         }
-        if (spawnQueue.size() == 0 && allEnemy.size() == 0 && currentWave == waveManager.getAllWaveAtLevel(level).size() - 1 && isEverLost == false) { ////asdasadadsdsa
+        if (spawnQueue.size() == 0 && allEnemy.size() == 0 && currentWave == waveManager.getAllWaveAtLevel(level).size() - 1 && !isEverLost && baseHP > 0 && isEverWin == false && isStartWave == true) { ////asdasadadsdsa
             if (waveCooldown >= FPS * 5) {
                 gameEnd.setIsWin(true);
                 gameEnd.setIsFinishing(true);
                 sound.setSound("victory");
                 sound.play();
+                isEverWin = true;
                 if (level == controller.unlockedLevel) {
                     controller.unlockedLevel++;
                 }
@@ -1050,9 +1057,11 @@ public class GamePanel extends JPanel implements Runnable {
             allTower.clear();
             allEnemy.clear();
             isEverLost = false;
+            isEverWin = false;
+            gameEnd.setIsWin(false);
+            gameEnd.setIsFinishing(false);
             coin = 300;
             baseHP = 1000;
-            isEverLost = false;
             tileManager.loadMap();
             tileManager.getTileImage();
             isStartWave = false;
@@ -1071,8 +1080,11 @@ public class GamePanel extends JPanel implements Runnable {
         coin = 300;
         baseHP = 1000;
         isEverLost = false;
+        isEverWin = false;
         isStartWave = false;
         countStartWave = 0;
+        gameEnd.setIsWin(false);
+        gameEnd.setIsFinishing(false);
         setAllSolidArea();
     }
 
@@ -1107,6 +1119,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void stopGameAndReturnToMenu() {
         gameThread = null;
         controller.returnToMenu();
+        backGroundSound.stop();
     }
 
     public ArrayList<SolidArea> getAllSolidArea() {

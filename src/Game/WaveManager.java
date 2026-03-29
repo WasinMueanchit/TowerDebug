@@ -1,6 +1,5 @@
 package Game;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -53,49 +52,49 @@ public class WaveManager {
     public void setWaveInLevel2()   {
         HashMap<String, Integer> wave1 = new HashMap<>();
         wave1.put("Female Goblin", 10);
-        wave1.put("MaleGoblin", 2);
-        wave1.put("ArmoredOrg", 2);
+        wave1.put("Male Goblin", 2);
+        wave1.put("Armored Org", 2);
 
         HashMap<String, Integer> wave2 = new HashMap<>();
         wave2.put("Female Goblin", 9);
-        wave2.put("MaleGoblin", 3);
-        wave2.put("ArmoredOrg", 2);
+        wave2.put("Male Goblin", 3);
+        wave2.put("Armored Org", 2);
 
         HashMap<String, Integer> wave3 = new HashMap<>();
         wave3.put("Female Goblin", 8);
-        wave3.put("MaleGoblin", 5);
-        wave3.put("ArmoredOrg", 2);
+        wave3.put("Male Goblin", 5);
+        wave3.put("Armored Org", 2);
         
         HashMap<String, Integer> wave4 = new HashMap<>();
         wave4.put("Female Goblin", 7);
-        wave4.put("MaleGoblin", 7);
-        wave4.put("ArmoredOrg", 3);
+        wave4.put("Male Goblin", 7);
+        wave4.put("Armored Org", 3);
 
         HashMap<String, Integer> wave5 = new HashMap<>();
-        wave5.put("MaleGoblin", 5);
+        wave5.put("MaleG oblin", 5);
         wave5.put("Cyclops", 1);
 
         HashMap<String, Integer> wave6 = new HashMap<>();
         wave6.put("Female Goblin", 3);
-        wave6.put("MaleGoblin", 2);
-        wave6.put("ArmoredOrg", 8);
+        wave6.put("Male Goblin", 2);
+        wave6.put("Armored Org", 8);
         
         HashMap<String, Integer> wave7 = new HashMap<>();
         wave7.put("Female Goblin", 5);
-        wave7.put("MaleGoblin", 12);
-        wave7.put("ArmoredOrg", 5);
+        wave7.put("Male Goblin", 12);
+        wave7.put("Armored Org", 5);
 
         HashMap<String, Integer> wave8 = new HashMap<>();
         wave8.put("Female Goblin", 8);
-        wave8.put("MaleGoblin", 12);
-        wave8.put("ArmoredOrg", 5);
+        wave8.put("Male Goblin", 12);
+        wave8.put("Armored Org", 5);
 
         HashMap<String, Integer> wave9 = new HashMap<>();
-        wave9.put("MaleGoblin", 15);
-        wave9.put("ArmoredOrg", 8);
+        wave9.put("Male Goblin", 15);
+        wave9.put("Armored Org", 8);
 
         HashMap<String, Integer> wave10 = new HashMap<>();
-        wave2.put("Yeti", 1);
+        wave10.put("Yeti", 1);
 
 
         allWaveLevel2.add(wave1);
@@ -113,57 +112,57 @@ public class WaveManager {
     public void setWaveInLevel3() {
         HashMap<String, Integer> wave1 = new HashMap<>();
         wave1.put("Female Goblin", 10);
-        wave1.put("MaleGoblin", 5);
-        wave1.put("ArmoredOrg", 3);
+        wave1.put("Male Goblin", 5);
+        wave1.put("Armored Org", 3);
         wave1.put("Ghost Female Goblin", 2);
 
         HashMap<String, Integer> wave2 = new HashMap<>();
         wave2.put("Female Goblin", 7);
-        wave2.put("MaleGoblin", 7);
-        wave2.put("ArmoredOrg", 4);
+        wave2.put("Male Goblin", 7);
+        wave2.put("Armored Org", 4);
         wave2.put("Ghost Female Goblin", 4);
 
         HashMap<String, Integer> wave3 = new HashMap<>();
         wave3.put("Female Goblin", 5);
-        wave3.put("MaleGoblin", 8);
-        wave3.put("ArmoredOrg", 5);
+        wave3.put("Male Goblin", 8);
+        wave3.put("Armored Org", 5);
         
         HashMap<String, Integer> wave4 = new HashMap<>();
         wave4.put("Female Goblin", 4);
-        wave4.put("MaleGoblin", 9);
-        wave4.put("ArmoredOrg", 6);
+        wave4.put("Male Goblin", 9);
+        wave4.put("Armored Org", 6);
         wave4.put("Ghost Female Goblin", 6);
 
         HashMap<String, Integer> wave5 = new HashMap<>();
         wave5.put("Female Goblin", 3);
-        wave5.put("MaleGoblin", 10);
-        wave5.put("ArmoredOrg", 8);
+        wave5.put("Male Goblin", 10);
+        wave5.put("Armored Org", 8);
         wave5.put("Ghost Female Goblin", 7);
 
         HashMap<String, Integer> wave6 = new HashMap<>();
         wave6.put("Female Goblin", 2);
-        wave6.put("MaleGoblin", 10);
-        wave6.put("ArmoredOrg", 9);
+        wave6.put("Male Goblin", 10);
+        wave6.put("Armored Org", 9);
         wave6.put("Ghost Female Goblin", 9);
         
         HashMap<String, Integer> wave7 = new HashMap<>();
         wave7.put("Female Goblin", 2);
-        wave7.put("MaleGoblin", 10);
-        wave7.put("ArmoredOrg", 9);
+        wave7.put("Male Goblin", 10);
+        wave7.put("Armored Org", 9);
         wave7.put("Ghost Female Goblin", 9);
 
         HashMap<String, Integer> wave8 = new HashMap<>();
-        wave8.put("MaleGoblin", 10);
-        wave8.put("ArmoredOrg", 9);
+        wave8.put("Male Goblin", 10);
+        wave8.put("Armored Org", 9);
         wave8.put("Ghost Female Goblin", 14);
 
         HashMap<String, Integer> wave9 = new HashMap<>();
-        wave8.put("MaleGoblin", 12);
-        wave8.put("ArmoredOrg", 10);
+        wave8.put("Male Goblin", 12);
+        wave8.put("Armored Org", 10);
         wave8.put("Ghost Female Goblin", 15);
 
         HashMap<String, Integer> wave10 = new HashMap<>();
-        wave2.put("EathGolem", 1);
+        wave2.put("Eath Golem", 1);
 
 
         allWaveLevel3.add(wave1);
@@ -181,12 +180,12 @@ public class WaveManager {
     public void setWaveInLevel4() {
         HashMap<String, Integer> wave1 = new HashMap<>();
         wave1.put("Female Goblin", 15);
-        wave1.put("MaleGoblin", 10);
+        wave1.put("Male Goblin", 10);
         wave1.put("Ghost Female Goblin", 5);
 
         HashMap<String, Integer> wave2 = new HashMap<>();
-        wave2.put("MaleGoblin", 15);
-        wave2.put("ArmoredOrg", 5);
+        wave2.put("Male Goblin", 15);
+        wave2.put("Armored Org", 5);
         wave2.put("Ghost Female Goblin",8);
 
         HashMap<String, Integer> wave3 = new HashMap<>();
@@ -196,51 +195,51 @@ public class WaveManager {
         
         HashMap<String, Integer> wave4 = new HashMap<>();
         wave4.put("Female Goblin", 20);
-        wave4.put("MaleGoblin", 20);
+        wave4.put("Male Goblin", 20);
 
         HashMap<String, Integer> wave5 = new HashMap<>();
         wave5.put("Cyclops", 2);
         wave5.put("Ghost Female Goblin", 10);
 
         HashMap<String, Integer> wave6 = new HashMap<>();
-        wave6.put("MaleGoblin", 10);
-        wave6.put("ArmoredOrg", 15);
+        wave6.put("Male Goblin", 10);
+        wave6.put("Armored Org", 15);
         wave6.put("Ghost Female Goblin", 15);
         
         HashMap<String, Integer> wave7 = new HashMap<>();
         wave7.put("Female Goblin", 30);
-        wave7.put("ArmoredOrg", 20);
+        wave7.put("Armored Org", 20);
 
         HashMap<String, Integer> wave8 = new HashMap<>();        
-        wave8.put("EartGolem", 12);
+        wave8.put("Eart Golem", 12);
         wave8.put("Ghost Female Goblin", 12);
 
         HashMap<String, Integer> wave9 = new HashMap<>();
-        wave9.put("MaleGoblin", 30);
+        wave9.put("Male Goblin", 30);
 
 
         HashMap<String, Integer> wave10 = new HashMap<>();
         wave10.put("Yeti", 2);
-        wave10.put("ArmoredOrg", 2);
+        wave10.put("Armored Org", 2);
         
         HashMap<String, Integer> wave11 = new HashMap<>();
-        wave11.put("ArmoredOrg", 25);
+        wave11.put("Armored Org", 25);
         wave11.put("Ghost Female Goblin", 20);
         
         HashMap<String, Integer> wave12 = new HashMap<>();
-        wave12.put("MaleGoblin", 5);
+        wave12.put("Male Goblin", 5);
 
         HashMap<String, Integer> wave13 = new HashMap<>();
-        wave13.put("ArmoredOrg", 40);
+        wave13.put("Armored Org", 40);
 
         HashMap<String, Integer> wave14 = new HashMap<>();
         wave14.put("Ghost Female Goblin", 30);
 
         HashMap<String, Integer> wave15 = new HashMap<>();
         wave15.put("Skeleton", 1);
-        wave15.put("EathGolem", 1);
+        wave15.put("Eath Golem", 1);
         wave15.put("Yeti", 1);
-        wave15.put("ArmoredOrg", 10);
+        wave15.put("Armored Org", 10);
         wave15.put("Ghost Female Goblin", 10);
 
 

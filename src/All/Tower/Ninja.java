@@ -15,7 +15,7 @@ public class Ninja extends Tower {
         super(gamePanel, x, y, "Ninja");
         super.setRange(baseRange);
         super.setDamage(80);
-        super.setAttackSpeed(150);
+        super.setAttackSpeed(200);
         super.setSellCost(60);
         super.setAttackType("Single");
         super.setIsGhostBuster(false);
@@ -41,9 +41,9 @@ public class Ninja extends Tower {
         if (currentCoin >= cost) {
             super.getGamePanel().setCoin(currentCoin - cost);
             super.setLevel(level + 1);
-            super.setDamage(damages[level - 1]);
-            super.setRange(range[level - 1]);
-            super.setAttackSpeed(attackSpeed[level - 1]);
+            super.setDamage(damages[level]);
+            super.setRange(range[level]);
+            super.setAttackSpeed(attackSpeed[level]);
         }
     }
 

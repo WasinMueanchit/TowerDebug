@@ -2,7 +2,6 @@ package Game;
 
 
 import All.Enemy.Enemy;
-import All.Enemy.FemaleGoblin;
 import All.Tower.Tower;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class CollisionChecker {
     }
 
     //check is pointer on any road;
-    public void checkTile(Pointer pointer) {
+    public void checkTile(Pointerable pointer) { //interface
         if(pointer.getSolidArea() != null){
             int pointerLeft = pointer.getX() + pointer.getSolidArea().x;
             int pointerRight = pointer.getX() + pointer.getSolidArea().x + pointer.getSolidArea().width;

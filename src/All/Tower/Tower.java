@@ -1,10 +1,10 @@
 package All.Tower;
 
 import All.Enemy.Enemy;
+import Game.Drawable;
 import Game.GamePanel;
 import Game.Particle;
 import Game.SolidArea;
-import Game.UpdatableAndDrawable;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -13,8 +13,9 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import Game.Updatable;
 
-public abstract class Tower implements UpdatableAndDrawable {
+public abstract class Tower implements Updatable, Drawable {
 
     private GamePanel gamePanel;
     private int x;

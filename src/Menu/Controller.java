@@ -76,13 +76,13 @@ public class Controller implements ActionListener {
             System.exit(0);
         }
         else if (e.getSource() == selectmap.getLevel1Btn()) {
-            startGame(1);
+            checkAndStartGame(1);
         } else if (e.getSource() == selectmap.getLevel2Btn()) {
-            startGame(2);
+            checkAndStartGame(2);
         } else if (e.getSource() == selectmap.getLevel3Btn()) {
-            startGame(3);
+            checkAndStartGame(3);
         } else if (e.getSource() == selectmap.getLevel4Btn()) {
-            startGame(4);
+            checkAndStartGame(4);
         }
     }
     
@@ -105,6 +105,17 @@ public class Controller implements ActionListener {
         switchScreen(gamePanel);
         gamePanel.requestFocus();
     }
+    
+    private void checkAndStartGame(int level) {
+        if (selectHero.getSelectedHeroes().isEmpty()) {
+             JOptionPane.showMessageDialog(mainFrame, 
+                    "Please Select Hero", 
+                    "Notifications", 
+                    JOptionPane.WARNING_MESSAGE);
+        } else {
+            startGame(level);
+        }
+ }
     
 }
 

@@ -20,12 +20,12 @@ public class Pirate extends Tower {
         super.setAttackType("Single");
         super.setIsGhostBuster(false);
         super.setCanCreateParticle(false);
-        super.setCanCreateMoney(true, 30);
+        super.setCanCreateMoney(true, 100);
         super.setPlacedSolidArea(new Rectangle(x - solidWidth / 2, y - solidHeight / 2, solidWidth, solidHeight));
     }
 
     int[] costs = {0, 100, 180};
-    int[] rewards = {50, 80, 100};
+    int[] rewards = {100, 120, 140};
 
     @Override
     public void levelUp() {
@@ -39,7 +39,7 @@ public class Pirate extends Tower {
         if (currentCoin >= cost) {
             super.getGamePanel().setCoin(currentCoin - cost);
             super.setLevel(level + 1);
-            super.setReward(rewards[level - 1]);
+            super.setReward(rewards[level]);
         }
     }
 

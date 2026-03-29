@@ -14,7 +14,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Pointer implements MouseMotionListener, MouseListener, KeyListener {
+public class Pointer implements MouseMotionListener, MouseListener, KeyListener, Updatable, Drawable,  Pointerable{
 
     private GamePanel gamePanel;
     private int x = 0;
@@ -44,6 +44,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         this.gameEnd = gameEnd;
     }
 
+    @Override
     public void update() {
         this.pointerArea = new Rectangle(x, y, 10, 10);
         collisionChecker.checkCharacterBox(this); //Check is pointer on characterbox
@@ -52,6 +53,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         collisionChecker.checkGameEnd(this); //Check is pointer on game end ui;
     }
 
+    @Override
     public void draw(Graphics2D g2) {
         drawCharacterSelected(g2);
         if (towerOnShowUpgrade != null) {
@@ -132,6 +134,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         this.x = x;
     }
 
+    @Override
     public int getX() {
         return x;
     }
@@ -140,6 +143,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         this.y = y;
     }
 
+    @Override
     public int getY() {
         return y;
     }
@@ -148,6 +152,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         return characterSelected;
     }
 
+    @Override
     public Rectangle getSolidArea() {
         return solidArea;
     }
@@ -156,6 +161,7 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         return collisionOn;
     }
 
+    @Override
     public void setCollisionOn(boolean collisionOn) {
         this.collisionOn = collisionOn;
     }
@@ -264,7 +270,6 @@ public class Pointer implements MouseMotionListener, MouseListener, KeyListener 
         } else if (holdOnToMenuButton == true) {
             gamePanel.getSound().setSound("buttonClick");
             gamePanel.getSound().play();
-            gameEnd.setIsFinishing(false);
             gameEnd.setIsFinishing(false);
             holdOnToMenuButton = false;
             gamePanel.stopGameAndReturnToMenu();
