@@ -15,7 +15,7 @@ public class Ninja extends Tower {
         super(gamePanel, x, y, "Ninja");
         super.setRange(baseRange);
         super.setDamage(80);
-        super.setAttackSpeed(200);
+        super.setAttackSpeed(150);
         super.setSellCost(60);
         super.setAttackType("Single");
         super.setIsGhostBuster(false);
@@ -27,7 +27,7 @@ public class Ninja extends Tower {
     int[] costs = {0, 100, 150};
     int[] damages = {80, 130, 200};
     int[] range = {300, 340, 380};
-    int[] attackSpeed = {200, 180, 160};
+    int[] attackSpeed = {150, 130, 110};
 
     @Override
     public void levelUp() {

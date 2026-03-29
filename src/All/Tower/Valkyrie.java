@@ -14,7 +14,7 @@ public class Valkyrie extends Tower {
     public Valkyrie(GamePanel gamePanel, int x, int y) {
         super(gamePanel, x, y, "Valkyrie");
         super.setRange(baseRange);
-        super.setDamage(10);
+        super.setDamage(5);
         super.setAttackSpeed(10);
         super.setSellCost(50);
         super.setAttackType("Single");
@@ -25,7 +25,7 @@ public class Valkyrie extends Tower {
     }
 
     int[] costs = {0, 70, 120};
-    int[] damages = {10, 15, 20};
+    int[] damages = {5, 7, 9};
     int[] range = {70, 90, 110};
     int[] attackSpeed = {10, 9, 8};
 

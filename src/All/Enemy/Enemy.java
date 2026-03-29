@@ -61,7 +61,7 @@ public abstract class Enemy {
             alive = false;
         }
         if(isHealable == true && health - 8< maxHealth){
-            health += 8;
+            health += 4;
         }
         solidArea = new Rectangle((x+gamePanel.getTileSize()/2)-solidWidth/2, (y+gamePanel.getTileSize()/2)-solidHeight/2, solidWidth ,solidHeight);
         Point target = waypoints[currentTarget];

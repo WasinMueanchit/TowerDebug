@@ -82,6 +82,7 @@ public class GamePanel extends JPanel implements Runnable {
     //Sound
     private Sound sound = new Sound();
     private Sound backGroundSound = new Sound();
+    private int soundCount = 0;
 
     public GamePanel(Controller controller, ArrayList<String> allCharacterSelected) {
         this.controller = controller;
@@ -228,6 +229,12 @@ public class GamePanel extends JPanel implements Runnable {
                 sound.play();
             }
         }
+        if (soundCount >= FPS * 250) {
+            backGroundSound.setSound("background");
+            backGroundSound.play();
+            soundCount = 0;
+        }
+        soundCount++;
     }
 
     public void prepareWave() {

@@ -24,7 +24,7 @@ public class Pirate extends Tower {
         super.setPlacedSolidArea(new Rectangle(x - solidWidth / 2, y - solidHeight / 2, solidWidth, solidHeight));
     }
 
-    int[] costs = {0, 100, 180};
+    int[] costs = {0, 50, 60};
     int[] rewards = {100, 120, 140};
 
     @Override

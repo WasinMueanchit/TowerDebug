@@ -14,7 +14,7 @@ public class Saolin extends Tower {
     public Saolin(GamePanel gamePanel, int x, int y) {
         super(gamePanel, x, y, "Saolin");
         super.setRange(baseRange);
-        super.setDamage(35);
+        super.setDamage(20);
         super.setAttackSpeed(50);
         super.setSellCost(60);
         super.setAttackType("Single");
@@ -25,8 +25,8 @@ public class Saolin extends Tower {
     }
 
     int[] costs = {0, 80, 140};
-    int[] damages = {35, 55, 95};
-    int[] range = {200, 240, 280};
+    int[] damages = {20, 30, 35};
+    int[] range = {180, 200, 220};
     int[] attackSpeed = {50, 45, 40};
 
     @Override
